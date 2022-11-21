@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2.JSX语法</title>
+</head>
+<body>
+  <div id="app">
+    
+  </div>
+  <hr>
+  <div>
+    <h4>1.jsx概述</h4>
+    <p>
+      const element = <h1>Hello, world!</h1>;这种标签语法既不是字符串也不是 HTML,而是可以在js中书写html标签的语法就被称为:JSX,它是JavaScript 的语法扩展。
+      JSX 是用来生成 React “元素”,然后react会将这些元素渲染为页面中的真实DOM。
+      在 JSX 语法中,你可以在大括号 {//js表达式} 内放置任何有效的 JavaScript 表达式。
+      {} 类似vue的插值表达式,用来输出简单的js表达式/变量等。
+
+      注释:{/* 注释内容  */}
+
+      注意: 因为 JSX 语法上更接近 JavaScript 而不是 HTML,所以 React DOM 使用 camelCase(小驼峰命名)来定义属性的名称,而不使用 HTML 属性名称的命名约定。
+      同时跟vue类似也必须有一个根元素包裹。
+      例如,JSX 里的 class 变成了 className,而 tabindex 则变为 tabIndex
+      注意:也是只能有一个根元素,多个时使用 () 括号包裹。
+
+
+      本质:Babel 会把 JSX 转译成一个名为 React.createElement() 函数调用最终是生成虚拟dom。
+      <img src="./images/jsx转换.png" alt=""><br>
+      React.createElement() 方法会预先执行一些检查,以帮助你编写无错代码,但实际上它创建了一个这样的对象:
+      <img src="./images/react元素.png" alt=""><br>
+      这些对象被称为 “React 元素”,也就是虚拟dom,最终被react渲染到页面中的内容。
+
+    </p>
+  </div>
+
+
+
+  <script src="./js/react.development.js" ></script>  
+  <script src="./js/react-dom.development.js" ></script>
+  <script src="./js/babel.min.js"></script>
+  <script type="text/babel">
+    const name  = 'zhangsan'
+
+    function formatName(user) {
+      return user.firstName + ' ' + user.lastName;
+    }
+    const user = {
+      firstName: 'Harper',
+      lastName: 'Perez'
+    }
+    const  element = <h1>hello {name} {formatName(user)}</h1>
+    ReactDOM.render( 
+      element,//类似vue中的template
+      document.getElementById('app')//类似vue中的el选项
+    )
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>5.组件state和生命周期</title>
+</head>
+<body>
+  <div id="app">
+    
+  </div>
+  <hr>
+  <div>
+    <h4>1.组件state</h4>
+    <p>
+      State 与 props 类似,但是 state 是私有的,并且完全受控于当前组件。在这一节之后react组件全部使用class声明方式。
+      函数式声明转变成class类声明步骤如下:
+        创建一个同名的 ES6 class,并且继承于 React.Component。
+        添加一个空的 render() 方法。
+        将函数体移动到 render() 方法之中。
+        在 render() 方法中使用 this.props 替换 props。
+        删除剩余的空函数声明。
+
+      跟vue类似,不要直接修改state而是使用 this.setState() 方法来动态更新组件 state。
+      构造函数是唯一可以给 this.state 赋值的地方。这个方法可以接收一个对象或者函数。
+      组件可以选择把它的 state 作为 props 向下传递到它的子组件中这就形成了父子组件通信的单向数据流
+    </p>
+    <h4>2.组件的生命周期</h4>
+    <p>
+      组件第一次被渲染到 DOM 中的时候,这在 React 中被称为“挂载(mount)”。
+      当 DOM 中 组件被删除的时候,这在 React 中被称为“卸载(unmount)”。
+      这时,可以为 class 组件声明一些特殊的方法,当组件挂载或卸载时就会去执行这些方法。
+      跟vue的生命周期钩子类似本质上就是一个函数API,这些方法也叫做“生命周期方法”。
+      componentDidMount() {},组件第一次渲染完成,此时dom节点已经生成,可以在这里调用ajax请求,返回数据setState后组件会重新渲染,这个就相当于vue的mounted阶段。
+      componentWillUnmount() {},在此处完成组件的卸载和数据的销毁。这个相当于vue中的beforeDestory啦，clear你在组件中所有的setTimeout,setInterval，移除所有组建中的监听 removeEventListener。
+      
+ 
+
+    </p>
+  </div>
+  <script src="./js/react.development.js" ></script>  
+  <script src="./js/react-dom.development.js" ></script>
+  <script src="./js/babel.min.js"></script>
+  <script type="text/babel">
+
+    // function Name(props) {
+    //   return (
+    //     <h1>hello {props.name},{props.age}</h1>
+    //   )
+    // }
+    class Name extends React.Component{
+      /*
+        state是通过构造函数传参的形式传入的
+
+      */
+      constructor(props){
+        super(props)
+        this.state = {date: new Date()};
+      }
+      render(){
+        return (
+          <div>
+            <h1>hello {this.props.name}{this.props.age}</h1>
+            <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+          </div>
+        )
+      }
+
+    }
+    const user = {
+      name:'lisi',
+      age:22
+    }
+    ReactDOM.render( 
+      <Name name={user.name} age={user.age}/>,//类似vue中的template
+      document.getElementById('app')//类似vue中的el选项
+    )
+  </script>
+
+</body>
+</html>
