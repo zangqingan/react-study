@@ -1,39 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>1.react概述和基本使用</title>
-</head>
-<body>
-  <!-- 2. 添加一个DOM容器,React组件会替换DOM容器内的任何已有内容。-->
-  <div id="app">
-    
-  </div>
-  <div>
-    react的使用跟vue类似也是分三步即可。学习时使用本地或者CDN链接(通过 CDN 的方式引入时需设置script标签的 crossorigin 属性这样可以有更好的错误处理体验)即可。
-    1.引入React核心库,react.development.js,react-dom.development.js(生产环境换成production.min.js)以及Babel编译器 babel.min.js以便使用JSX语法。
-    2.添加一个DOM容器,React组件会替换DOM容器内的任何已有内容
-    3.加载自己定义的 React 组件,在script标签中使用jsx 要添加 type="text/babel" 属性
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1.react概述和基本使用</title>
+  </head>
+  <body>
+    <!-- 2. 添加一个DOM容器,React组件会替换DOM容器内的任何已有内容。-->
+    <div id="app"></div>
+    <div>
+      <h3>一、react概述</h3>
+      <div>
+        react
+        应用程序是由组件组成的，一个组件时UI(用户界面)的一部分。它拥有自己的逻辑和外观(js逻辑和html结构样式)。
+        组件的本质是一个JavaScript的函数,在使用时和vue类似写成HTML标签形式不过React
+        组件必须以大写字母开头，而 HTML 标签则必须是小写字母。
+      </div>
+      <h3>二、react使用步骤</h3>
+      <div>
+        react的使用跟vue类似也是分三步即可。学习时使用本地或者CDN链接(通过 CDN
+        的方式引入时需设置script标签的 crossorigin
+        属性这样可以有更好的错误处理体验)即可。<br />
+        1.引入React核心库,react.development.js,react-dom.development.js(生产环境换成production.min.js)以及Babel编译器
+        babel.min.js以便使用JSX语法。<br />
+        2.添加一个DOM容器,React组件会替换DOM容器内的任何已有内容<br />
+        3.加载自己定义的 React 组件,在script标签中使用jsx 要添加
+        type="text/babel" 属性 React 应用程序的组成部分:元素和组件。<br />
+      </div>
+    </div>
 
-    React 应用程序的组成部分:元素和组件。
-  </div>
-
-  <!-- 1.引入React核心库 -->
-  <!-- 注意: 部署时，将 "development.js" 替换为 "production.min.js"。-->
-  <script src="./js/react.development.js" ></script>  
-  <script src="./js/react-dom.development.js" ></script>
-  <!-- 在script标签中使用jsx 添加 type="text/babel" 属性。-->
-  <script src="./js/babel.min.js"></script>
-  <!-- 3.加载自己定义的 React 组件，当然这个一般是抽离成js文件引入的。-->
-  <script type="text/babel">
-    // 引入核心库后自动注入浏览器的对象类似Vue构造函数。
-    ReactDOM.render( 
-      <h1>hello world</h1>,//类似vue中的template,也是可以定义一个变量接收抽离出去的。最终还是编译成js的。
-      document.getElementById('app')//类似vue中的el选项
-    )
-  </script>
-
-</body>
+    <!-- 1.引入React核心库 -->
+    <!-- 注意: 部署时，将 "development.js" 替换为 "production.min.js"。-->
+    <script src="./js/react.development.js"></script>
+    <script src="./js/react-dom.development.js"></script>
+    <!-- 在script标签中使用jsx 添加 type="text/babel" 属性。-->
+    <script src="./js/babel.min.js"></script>
+    <!-- 3.加载自己定义的 React 组件，当然这个一般是抽离成js文件引入的。-->
+    <script type="text/babel">
+      // 引入核心库后自动注入浏览器的对象类似Vue构造函数。
+      ReactDOM.render(
+        <h1>hello world</h1>, //类似vue中的template,也是可以定义一个变量接收抽离出去的。最终还是编译成js的。
+        document.getElementById("app") //类似vue中的el选项
+      );
+    </script>
+  </body>
 </html>
