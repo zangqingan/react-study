@@ -1,7 +1,9 @@
+import Count from '../component/count.js'
 import Comment from '../component/comment.js'
 // 数据对象类似vue中的data中定义的数据
-const comment = [
+const commentData = [
     {
+        id: 1,
         date: new Date(),
         text: 'I hope you enjoy learning React!',
         author: {
@@ -10,6 +12,7 @@ const comment = [
         }
     },
     {
+        id: 2,
         date: new Date(),
         text: '希望你能喜欢',
         author: {
@@ -18,6 +21,7 @@ const comment = [
         }
     },
     {
+        id: 3,
         date: new Date(),
         text: '如果可以的话',
         author: {
@@ -37,8 +41,10 @@ function App(props) {
             <br />
             
             {
-                comment.map(item => <Comment  {...item} />)
+                commentData.map(item => <Comment key={item.id}  {...item} />)
             }
+            <br />
+            <Count />
         </div>
     )
 }
