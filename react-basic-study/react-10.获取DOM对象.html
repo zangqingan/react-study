@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>10.react获取DOM对象</title>
+</head>
+<body>
+  <div id="app">
+    
+  </div>
+  <hr>
+  <div>
+    <h3>1.概述</h3>
+    <pre>
+        1.创建一个容器用来存储DOM对象、使用useRef() 钩子函数
+        const divRef = useRef()
+        2. 在html标签或react组件上使用 ref属性等于useRef()钩子生成的对象即可。
+        div ref={divRef}>/div
+        divRef.current 就是返回原生的DOM对象。
+
+    </pre>
+  </div>
+
+
+
+  <script src="./js/react.development.js" ></script>  
+  <script src="./js/react-dom.development.js" ></script>
+  <script src="./js/babel.min.js"></script>
+  <script type="text/babel">
+
+
+  </script>
+
+</body>
+</html>
