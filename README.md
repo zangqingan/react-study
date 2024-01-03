@@ -13,6 +13,9 @@ npm init -y 初始化项目
 npm i  react react-dom react-scripts 安装需要依赖
 npx react-scripts bulid 就可以使用本项目内的依赖包打包项目。
 npx react-scripts start 实时运行
+也可以把命令写到package.json文件中的scripts选项里。
+
+
 
 
 

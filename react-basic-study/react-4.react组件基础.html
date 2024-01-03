@@ -20,7 +20,7 @@
         react组件从组件声明的方式划分分类有两种:函数组件和class组件
         1.函数组件,用function关键字声明本质上还是js函数,注意首字母必须大写。
         function Welcome(props) {
-          return <h1>Hello, {props.name}</h1>;//返回的是 react元素 
+          return <h1>Hello, {props.name}</h1>;//返回的是 react元素 也就是jsx
         }
 
         2.class组件,使用es6的class关键字声明,而在js里class本质也是一个函数。注意:react中所有组件都是继承React.Component 
@@ -39,12 +39,13 @@
         组件无论是使用函数声明还是通过 class 声明,都决不能修改自身的 props而是只是读取。跟vue类似不能直接在子组件内部手动修改。
         即所有 React 组件都必须像纯函数一样保护它们的 props 不被更改。
 
-        要像修改值要使用'state'状态来改变。
+        要想修改值要使用'state'状态来改变。
 
     </p>
     <h3>2.组件的复用和组合</h3>
     <p>
       组件在定义之后是可以重复使用也就是复用的,同时在定义组件时也可以引用或者输出其他组件。
+      所以一般组件是抽离单独放到一个文件里的。
       这样就形成了组件的嵌套使用。
     </p>
   </div>
