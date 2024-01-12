@@ -13,50 +13,44 @@
   <hr>
   <div>
     <h4>1.组件state(组件状态)</h4>
-    <p>
-      State 与 props 类似,但是 state 是私有的,并且完全受控于当前组件。
-      函数式声明转变成class类声明步骤如下:
-        创建一个同名的 ES6 class,并且继承于 React.Component。
-        添加一个空的 render() 方法。
-        将函数体移动到 render() 方法之中。
-        在 render() 方法中使用 this.props 替换 props。
-        删除剩余的空函数声明。
+    <pre>
+      1.概述
+        State 与 props 类似,但是 state 是私有的,并且完全受控于当前组件。简单说使用它就可以实现状态的改变页面同步刷新。
 
-      函数组件中、通过钩子函数 useState() 使用即可获取到state状态变量。
-      import { useState } from 'react'
-      在使用时接受一个初始值参数、
-      const result = useState(1)
-      返回一个数组
-        第一个元素就是初始值、
-        第二个元素是一个函数通常命名为 setXXX、它是用来修改state的、调用它修改state会触发组件的重新渲染。
-        只有当值变化不一样了才会发生重新渲染。当state是一个对象时修改是整个替换。
-        它也可以接受一个回调函数、回调函数会接受上一次的state作为参数
-      跟vue类似,不要直接修改state而是使用 this.setState() 方法来动态更新组件 state。
-      组件可以选择把它的 state 作为 props 向下传递到它的子组件中这就形成了父子组件通信的单向数据流
+      2.使用方法
+
+        函数组件: 使用是很简单的、通过执行钩子函数 useState() 即可获取到一个state状态变量。
+          import { useState } from 'react' 引入钩子函数
+        在使用时接受一个初始值参数、
+          const result = useState(1)
+          解构
+          const [age,setAge] = useAge(1)
+        返回一个数组
+          第一个元素就是初始值、
+          第二个元素是一个函数通常命名为 setXXX、它是用来修改state的、调用它就会修改state进而会触发组件的重新渲染。
+          只有当值变化不一样了才会发生重新渲染。当state是一个对象时修改是整个替换。
+          它也可以接受一个回调函数、回调函数会接受上一次的state作为参数
+        跟vue类似,不要直接修改state而是使用 this.setState() 方法来动态更新组件 state。
+        组件可以选择把它的 state 作为 props 向下传递到它的子组件中这就形成了父子组件通信的单向数据流。
     </p>
     <h4>2.组件的生命周期</h4>
-    <p>
+    <pre>
       组件第一次被渲染到 DOM 中的时候,这在 React 中被称为“挂载(mount)”。
       当 DOM 中 组件被删除的时候,这在 React 中被称为“卸载(unmount)”。
-      这时,可以为 class 组件声明一些特殊的方法,当组件挂载或卸载时就会去执行这些方法。
-      跟vue的生命周期钩子类似本质上就是一个函数API,这些方法也叫做“生命周期方法”。
+      这时,当组件挂载或卸载时就可以执行一些特点方法。跟vue的生命周期钩子类似本质上就是一个函数API,这些方法也叫做“生命周期方法”。
       componentDidMount() {},组件第一次渲染完成,此时dom节点已经生成,可以在这里调用ajax请求,返回数据setState后组件会重新渲染,这个就相当于vue的mounted阶段。
-      componentWillUnmount() {},在此处完成组件的卸载和数据的销毁。这个相当于vue中的beforeDestory啦，clear你在组件中所有的setTimeout,setInterval，移除所有组建中的监听 removeEventListener。
-      
- 
+      componentWillUnmount() {},在此处完成组件的卸载和数据的销毁。
+      这个相当于vue中的beforeDestory、清除你在组件中所有的setTimeout,setInterval、移除所有组建中的监听 removeEventListener。
 
     </p>
   </div>
+
+  <!-- js -->
   <script src="./js/react.development.js" ></script>  
   <script src="./js/react-dom.development.js" ></script>
   <script src="./js/babel.min.js"></script>
   <script type="text/babel">
 
-    // function Name(props) {
-    //   return (
-    //     <h1>hello {props.name},{props.age}</h1>
-    //   )
-    // }
     class Name extends React.Component{
       /*
         state是通过构造函数传参的形式传入的
@@ -80,9 +74,10 @@
       name:'lisi',
       age:22
     }
-    ReactDOM.render( 
+    //类似vue中的el选项
+    const root = ReactDOM.createRoot(document.getElementById('app'))
+    root.render( 
       <Name name={user.name} age={user.age}/>,//类似vue中的template
-      document.getElementById('app')//类似vue中的el选项
     )
   </script>
 

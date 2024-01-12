@@ -3,64 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width、 initial-scale=1.0">
   <title>4.react组件基础</title>
 </head>
 <body>
-  <div id="root">  
-
-  </div>
+  <div id="root"></div>
   <hr>  
   <div>
     <h3>1.react组件</h3>
-    <p>
-        组件从概念上类似于 JavaScript 函数。它也接受任意的形参(用 “props”对象标识),并返回用于描述页面展示内容的 React 元素即jsx。
-        简单理解就是react组件就是一个返回react元素的js函数,区别在于这个函数里使用的是JSX语法也就是js里写html标签的语法。
-        组件的定义和分类:
-        react组件从组件声明的方式划分分类有两种:函数组件和class组件
-        1.函数组件,用function关键字声明本质上还是js函数,注意首字母必须大写。
-        function Welcome(props) {
-          return <h1>Hello, {props.name}</h1>;//返回的是 react元素 也就是jsx
-        }
+    <pre>
 
-        2.class组件,使用es6的class关键字声明,而在js里class本质也是一个函数。注意:react中所有组件都是继承React.Component 
-        class Welcome extends React.Component {
-          render() {
-            return <h1>Hello, {this.props.name}</h1>;
+      1.概述
+        组件允许你将 UI 拆分为一个个独立可复用的代码片段、并对每个片段进行独立构思。和vue中的组件是一个意思。
+        它从概念上类似于 JavaScript 函数、它也接受任意的形参(用 “props”对象标识)、并返回用于描述页面展示内容的 React 元素即jsx。
+        简单理解就是react组件就是一个返回react元素的js函数、区别在于这个函数里使用的是JSX语法、同时函数名首字母必须大写。
+
+      2.分类
+        react组件的声明方式有两种:函数组件(常用)和class组件
+
+        1.函数组件、用function关键字声明本质上就还是js函数、不过要注意首字母必须大写。
+          function Welcome(props) {
+            return h1>Hello、 {props.name} /h1>;//返回的是 react元素 也就是jsx
           }
-        }
+
+        2.class组件、使用es6的class关键字声明、而在js里class本质也是一个函数。注意:react中所有组件都是必须继承React.Component 
+          class Welcome extends React.Component {
+            render() {
+              return h1>Hello、 {this.props.name} /h1>;
+            }
+          }
         
-        由此可见react组件本质上就是一个JavaScript函数,只不过函数名(组件名)称必须以大写字母开头,因为react会将以小写字母开头的组件视为原生 DOM 标签,同时里面使用的是JSX语法即一般返回的是react元素。
-        组件的使用:
-          和vue也是类似的,定义组件之后就像使用原生html标签一样使用react组件,const element = <自定义react组件名>。
-          当 React 元素为用户自定义的组件时,它会将 JSX 所接收的属性(attributes)以及子组件(children)都放到一个对象里传递给组件,这个对象被称之为 “props”。
-          这时自定义组件内部就可以通过 props.属性名 访问接收的参数。
-        注意:props的命名从组件自身的角度命名 props,而不是依赖于调用组件的上下文命名。
-        组件无论是使用函数声明还是通过 class 声明,都决不能修改自身的 props而是只是读取。跟vue类似不能直接在子组件内部手动修改。
-        即所有 React 组件都必须像纯函数一样保护它们的 props 不被更改。
+        由此可见react组件本质上就是一个JavaScript函数、只不过函数名(组件名)称必须以大写字母开头、同时函数体内使用的是JSX语法并且一般返回的是一个react元素。
+        因为react会将以小写字母开头的组件视为原生 DOM 标签。
+
+      3.组件的使用
+          和vue也是类似的、定义组件之后就像使用原生html标签一样使用react组件、react元素可以是原生的HTML标签也可以是react组件。
+          组件在定义时也是可以使用已经定义好的其它组件的、这时就形成了组件的嵌套。
+          const element = div className="UserInfo">
+              《 自定义react组件名 /》 。
+          /div>  
+
+      4.组件传参
+          当 React 元素为用户自定义的组件时、它会将 JSX 所接收的属性(attributes)以及子组件(children)都放到一个对象里传递给组件、这个对象被称之为 “props”。
+          也就是react函数组件都会接受一个名为 props 的参数对象、根据es6新增的语法它是可以解构使用的。
+          这时自定义组件内部就可以通过 props.属性名 访问接收的参数、要传入参数时使用 {} 即可。
+        如: 《 自定义react组件名 name="David" age=23 gender={变量名} /》
+          组件内部: 
+          function 自定义react组件名(props) {
+            props.name、props.age、props.gender 就可以读取到传入的参数值。
+          }
+          解构：
+          function 自定义react组件名({name,age,gender}) {
+            name,age,gender 就可以直接读取到对应的参数值。
+          }
+        注意:props的命名从组件自身的角度命名 props、而不是依赖于调用组件的上下文命名。
+        组件无论是使用函数声明还是通过 class 声明、都决不能修改自身的 props而是只是读取。跟vue类似不能直接在子组件内部手动修改。
+        即单向数据流所有 React 组件都必须像纯函数一样保护它们的 props 不被更改。
 
         要想修改值要使用'state'状态来改变。
 
-    </p>
+    </pre>
     <h3>2.组件的复用和组合</h3>
-    <p>
-      组件在定义之后是可以重复使用也就是复用的,同时在定义组件时也可以引用或者输出其他组件。
-      所以一般组件是抽离单独放到一个文件里的。
-      这样就形成了组件的嵌套使用。
-    </p>
+    <pre>
+      组件在定义之后是可以重复使用也就是复用的、同时在定义组件时也可以引用或者输出其他组件也就是组件的嵌套组合。
+      所以一般组件是抽离单独放到一个文件里的、也就是一个组件就是一个js文件。
+    </pre>
+    <img src="./images/组件基础.png" alt=""><br>
   </div>
 
   <script src="./js/react.development.js" ></script>  
   <script src="./js/react-dom.development.js" ></script>
   <script src="./js/babel.min.js"></script>
   <script type="text/babel">
-  // avatar组件，孙孙子组件
+  // 定义一个处理本地日期格式的函数
+  function formatDate(date) {
+    return date.toLocaleDateString();
+  }
+  // avatar组件、孙孙子组件
   function Avatar(props){
      return(
       <img className="Avatar" src={props.user.avatarUrl} alt={props.user.name} />
     )
   }
-  // UserInfo组件，孙子组件
+  // UserInfo组件、孙子组件
   function UserInfo(props){
     return (
     <div className="UserInfo">
@@ -69,9 +94,9 @@
         {props.user.name}      
       </div>    
     </div>
-    );
+    )
   }
-  // Comment组件，子组件 
+  // Comment组件、子组件 
   function Comment(props) {
     return (
       <div className="Comment">
@@ -99,43 +124,51 @@
           {props.text}
         </div>
         <div className="Comment-date">
-          {/* 花括号相当于vue的插值表达式,所以可以运行js函数*/}
+          {/* 花括号相当于vue的插值表达式、所以可以运行js函数*/}
           {formatDate(props.date)}
         </div>
       </div>
-    );
+    )
   }
-  // 1.函数定义，父级组件 
+
+  // 定义父级组件 
   function Welcome(props) {
       return (
         <div>
-          <h1>Hello, {props.name}</h1>
+          <h1>Hello、 {props.name}</h1>
           {
             /*
-            // 跟vue组件类似传入props不过属性名前不用加:声明未动态绑定,react 会自动动态绑定。
-            //date,text,author都是自己定义定义props属性名,即Comment组件内部使用props.属性名访问的。
+            // 跟vue组件类似传入props不过属性名前不用加:声明未动态绑定、react 会自动动态绑定。
+            //date、text、author都是自己定义定义props属性名、即Comment组件内部使用props.属性名访问的。
             //即:props.date、props.text、props.author
             */
           }
           <Comment date={comment.date} text={comment.text} author={comment.author} />
-    </div>
-      );
+       </div>
+      )
+  }
+
+  // 1.函数定义根组件
+  function App1() {
+    return (
+      <div>
+          <Welcome name="Sara" />
+          <Welcome name="张三" />
+      </div>
+    )
   }
   // 2.类定义  根组件
-  class App extends React.Component{
+  class App2 extends React.Component{
     render() {
      return( 
        <div>
-          <Welcome name="Sara" />
-          <Welcome name="张三" />
+          <Welcome name="David" />
+          <Welcome name="大卫" />
         </div>
       )
     }
   }
-  // 定义一个处理本地日期格式的函数
-  function formatDate(date) {
-    return date.toLocaleDateString();
-  }
+
 
 
   // 数据对象类似vue中的data中定义的数据
@@ -146,15 +179,12 @@
       name: 'Hello Kitty',
       avatarUrl: 'http://placekitten.com/g/64/64'
     }
-  };
+  }
 
 
-  const element = <App/>;
-  ReactDOM.render(
-    element,
-    document.getElementById('root')
-  );
-
+  const element = <App2 />
+  const root = ReactDOM.createRoot(document.getElementById('root'))
+  root.render(element)
 
   </script>
 </body>

@@ -18,9 +18,9 @@ npx react-scripts start 实时运行
 
 # 四、react-project-study
 项目实战
-使用 create-react-app 工具
+使用 create-react-app 工具、用于创建react的单页面应用。
 
-使用vite
+使用vite 
 
 
 
