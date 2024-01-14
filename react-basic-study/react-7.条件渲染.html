@@ -12,15 +12,46 @@
   </div>
   <hr>
   <div>
-    <h4>1.react条件渲染</h4>
-    <p>
-      React 中的条件渲染和 JavaScript 中的一样,使用 JavaScript 运算符 if 或者条件运算符:与运算符 &&,三元运算符。 
+    <h3>1.react条件渲染</h3>
+    <pre>
+
+      React 中的条件渲染和 JavaScript 中的一样,使用 JavaScript 运算符 if语句、三元运算符 ?: 和与运算符 && 根据不同的情况渲染 JSX。 
       去创建元素来表现当前的状态,然后让 React 根据它们来更新 UI。
-      而不是像vue中封装了条件渲染指令。但本质上都是一样的,根据条件的不同返回不同的值或者组件。
+      而不是像vue中封装了条件渲染指令。但本质上都是一样的就是根据条件的不同来显示不同的值或者组件。
 
+      if - 返回一个不一样的 JSX、如果不想显示任何东西返回 null即可、因为在react里{}是不会显示null的。
+      得益于jsx的写法我们可以用一个变量来存储react元素或组件。
+      if (isPacked) {
+        return li className="item">{name} ✔/li>;
+      }
+      return li className="item">{name}/li>;
+
+      const isChecked = li className="item">{name} ✔/li>;
+      const notChecked = li className="item">{name}/li>;
+      if (isPacked) {
+        return isChecked
+      }
+      return notChecked
+
+      三元运算符 ?: - 等价写法、返回值也可以是jsx的这时要使用()括起来而已。当然内容多的时候还是抽离成一个组件的。
+      return (
+        li className="item">
+          {isPacked ? (name + ' ✔' ): name}
+        /li>
+      )
+      在 JSX 中，{cond ? 《A /> : 《B />} 表示 “当 cond 为真值时, 渲染 《A />组件，否则 《B />组件。
       
+      与运算符 && - 利用JavaScript短路与的特性、只要左边为true就会返回右边的内容。
+      在当条件成立时只想渲染一些简单的JSX或者不做任何渲染就可以考虑使用这个。
+      return (
+        li className="item">
+          {name} {isPacked && '✔'}
+        /li>
+      )
+      在 JSX 中，{cond && 《A />} 表示 “当 cond 为真值时, 渲染 《A />，否则不进行渲染。
 
-    </p>
+
+    </pre>
   </div>
 
 
@@ -89,11 +120,6 @@
         );
       }
     }
-
-
-
-
-
 
     ReactDOM.render(
       <LoginControl />, 
