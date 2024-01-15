@@ -10,18 +10,44 @@
   <div id="app"></div>
   <hr>
   <div>
-    <h4>1.react事件绑定</h4>
+    <h3>1.react事件绑定</h3>
     <pre>
-      React 元素的事件处理和 DOM 元素的很相似，但是有一点语法上的不同：
-        React 事件的命名采用小驼峰式(camelCase)，而不是纯小写。
-        同时使用 JSX 语法时需要传入一个函数作为事件处理函数，而不是一个字符串。
+
+      React 允许你向 JSX 中添加事件处理程序、事件处理程序就是自定义的函数、它将在用户交互时被触发、如点击、悬停、焦点在表单输入框上等等。
+      React 元素的事件处理和 DOM 元素的很相似、但是有一点语法上的不同、
+        React 事件的命名采用小驼峰式(camelCase)、而不是纯小写。
+        自定义的事件名通常也是以on-事件名命名、也通过props传递进组件内部。
+        同时使用 JSX 语法时需要传入一个函数作为事件处理函数、而不是一个字符串。
+        事件处理函数通常是在组件内部定义、名称以 handle 开头、后跟事件名称。
         <img src="./images/react事件处理.png" alt="">
         阻止默认行为必须显式的使用 preventDefault声明。
-        使用 ES6 class 语法定义一个组件的时候，通常的做法是将事件处理函数声明为 class 中的方法
-
-        也会传入事件对象 event 到事件处理函数里。
       
+        在 JSX 中定义一个内联的事件处理函数
+        button onClick={function handleClick() {
+          alert('你点击了我！');
+        }}>
 
+        使用箭头函数
+        button onClick={() => {
+          alert('你点击了我！');
+        }}>
+
+        但是一般是抽离声明一个事件处理函数、然后是传递这个函数对象。
+        在发生交互时react会自动帮执行事件处理函数。
+        function handleClick() {}
+        button onClick={handleClick}>
+
+    </pre>
+    <h3>2.事件的传播</h3>
+    <pre>
+
+      在react中所有事件、除了 onScroll、依然是会沿着树向上“冒泡”或“传播”的。
+      所有事件处理函数默认都是接收一个事件对象 event 作为唯一的参数、
+      按照惯例它通常被称为 e ，代表 “event”事件。
+      可以使用此对象来读取当前触发事件的相关信息。
+      比如:
+        e.stopPropagation()阻止触发绑定在外层标签上的事件处理函数即阻止传播。
+        e.preventDefault()阻止少数事件的默认浏览器行为。
     </pre>
   </div>
 
@@ -30,37 +56,31 @@
   <script src="./js/react.development.js" ></script>  
   <script src="./js/react-dom.development.js" ></script>
   <script src="./js/babel.min.js"></script>
+  <!-- react代码 -->
   <script type="text/babel">
-    class Toggle extends React.Component{
-      constructor(props){
-        super(props)
-        this.state = {isToggleOn:true}
-        // 为了在回调中使用 `this`，这个绑定是必不可少的    
-        this.handleClick = this.handleClick.bind(this);
-      }
-      handleClick(){
-        this.setState( prevState => (
-          {isToggleOn: !prevState.isToggleOn}
-          
-          )
-        );
-      }
-      render() {
-        return (
-          <button onClick={this.handleClick}>{this.state.isToggleOn ? 'ON' : 'OFF'}
-          </button>
-        );
-      }
 
-
-
+    function Toggle1(props) {
+      const [isToggleOn,setIsToggleOn] = React.useState(true)
+      function handleClick() {
+        setIsToggleOn( prevState => 
+          prevState=!prevState
+        )
+      }
+      return (
+        <button onClick={handleClick}>{isToggleOn ? 'ON' : 'OFF'}
+        </button>
+      )
     }
 
+    function App() {
+      return (
+        <Toggle1 />
+      )
+    }
 
-    ReactDOM.render( 
-      <Toggle />,//类似vue中的template
-      document.getElementById('app')//类似vue中的el选项
-    )
+    const root = ReactDOM.createRoot(document.getElementById('app'))
+    root.render(<App />)
+    
   </script>
 
 </body>
