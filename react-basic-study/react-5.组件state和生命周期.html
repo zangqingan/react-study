@@ -7,33 +7,66 @@
   <title>5.组件state和生命周期</title>
 </head>
 <body>
-  <div id="app">
-    
-  </div>
+  <div id="app"></div>
   <hr>
   <div>
-    <h4>1.组件state(组件状态)</h4>
+    <h3>1.组件state(组件状态)</h3>
     <pre>
+
       1.概述
-        State 与 props 类似,但是 state 是私有的,并且完全受控于当前组件。简单说使用它就可以实现状态的改变页面同步刷新。
+        State 与 props 类似,但是 state 是私有的,并且完全受控于当前组件。
+        state 中可以保存任意类型的 JavaScript 值包括对象。
+        简单说使用它就可以实现状态的改变页面同步刷新。
 
       2.使用方法
-
-        函数组件: 使用是很简单的、通过执行钩子函数 useState() 即可获取到一个state状态变量。
-          import { useState } from 'react' 引入钩子函数
+        函数组件: 使用是很简单的、通过执行Hook(钩子函数) useState() 即可获取到一个state状态变量、为组件添加一个状态。
+          import { useState } from 'react' 文件顶部引入钩子函数 useState
         在使用时接受一个初始值参数、
           const result = useState(1)
           解构
-          const [age,setAge] = useAge(1)
-        返回一个数组
-          第一个元素就是初始值、
-          第二个元素是一个函数通常命名为 setXXX、它是用来修改state的、调用它就会修改state进而会触发组件的重新渲染。
-          只有当值变化不一样了才会发生重新渲染。当state是一个对象时修改是整个替换。
-          它也可以接受一个回调函数、回调函数会接受上一次的state作为参数
-        跟vue类似,不要直接修改state而是使用 this.setState() 方法来动态更新组件 state。
-        组件可以选择把它的 state 作为 props 向下传递到它的子组件中这就形成了父子组件通信的单向数据流。
-    </p>
-    <h4>2.组件的生命周期</h4>
+          const [age,setAge] = useState(1)
+        每次组件渲染时都会返回一个数组、 它正好有两项。
+          第一个元素: 就是初始值也就是当前状态、它会保存组件上次渲染的值。
+          第二个元素: 是一个 setter 函数(更新函数)通常命名为 setXXX、它是用来修改state的、调用它就会修改state并触发 React 再次渲染组件。
+          它也可以接受一个回调函数、回调函数会接受上一次的state作为参数。
+          
+        跟vue类似,不要直接修改state而是使用 setter 函数来动态更新组件 state。
+        同时组件可以选择把它的 state 作为 props 向下传递到它的子组件中这就形成了父子组件通信的单向数据流。
+
+        3.更新state
+          在 state 中存放数字、字符串和布尔值这些不能被改变或是只读的通过替换它们的值以触发一次重新渲染。
+          即:
+            const [x, setX] = useState(0);
+            const newX = 3
+            setX(newX)或者setX(3) 这样即可触发重新渲染。
+        
+          当state为对象时想要更新它、你需要创建一个新的对象(或者将其拷贝一份)、然后将 state 更新为新的对象。
+          总之就是不能直接修改原对象
+          即:
+            const [position, setPosition] = useState({ x: 0, y: 0 });
+            setPosition({
+              x: 1,
+              y: 1
+            });
+
+            还有一种是希望保留部分之前的数据
+            const [person, setPerson] = useState({
+              firstName: 'Barbara',
+              lastName: 'Hepworth',
+              email: 'bhepworth@sculpture.com'
+            });
+            修改、同名属性和JavaScript对象语法一样后面的会覆盖前面的。
+            setPerson({
+              ...person, // 复制上一个 person 中的所有字段
+              firstName: e.target.value // 从 input 中获取新的并覆盖 firstName 字段 
+            });
+            嵌套的对象同理。
+
+            当state为数组时(JavaScript数组也是对象)、所以是一样的需要创建一个新数组（或者复制现有数组），然后用新数组来更新状态。
+            新数组包含了原始数组的所有元素 以及 一个或多个在末尾的新元素
+
+    </pre>
+    <h3>2.组件的生命周期</h3>
     <pre>
       组件第一次被渲染到 DOM 中的时候,这在 React 中被称为“挂载(mount)”。
       当 DOM 中 组件被删除的时候,这在 React 中被称为“卸载(unmount)”。
@@ -42,7 +75,14 @@
       componentWillUnmount() {},在此处完成组件的卸载和数据的销毁。
       这个相当于vue中的beforeDestory、清除你在组件中所有的setTimeout,setInterval、移除所有组建中的监听 removeEventListener。
 
-    </p>
+    </pre>
+    <h3>3.组件的渲染</h3>
+    <pre>
+
+      react 的组件都是通过react 进行渲染的、
+      组件第一次执行(调用render函数时)、
+      组件状态state改变都会触发渲染(执行setter函数更新状态后)
+    </pre>
   </div>
 
   <!-- js -->
@@ -51,34 +91,94 @@
   <script src="./js/babel.min.js"></script>
   <script type="text/babel">
     // React.useState(0)
-    class Name extends React.Component{
-      /*
-        state是通过构造函数传参的形式传入的
-
-      */
-      constructor(props){
-        super(props)
-        this.state = {date: new Date()};
-      }
-      render(){
-        return (
+    function Name(props) {
+      const [date,setDate] = React.useState(new Date())
+      return (
           <div>
-            <h1>hello {this.props.name}{this.props.age}</h1>
-            <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+            <h1>hello {props.name}{props.age}</h1>
+            <h2>It is {date.toLocaleTimeString()}</h2>
           </div>
         )
-      }
-
     }
     const user = {
       name:'lisi',
       age:22
     }
+    function Form() {
+      const [person, setPerson] = React.useState({
+        firstName: '王',
+        lastName: '语嫣',
+        email: 'wyy@163.com'
+      });
+
+      function handleFirstNameChange(e) {
+        // 这样修改是不对的
+        // person.firstName = e.target.value;
+        setPerson({
+          ...person,
+          firstName: e.target.value
+        });
+      }
+
+      function handleLastNameChange(e) {
+        // person.lastName = e.target.value;
+        setPerson({
+          ...person,
+          lastName: e.target.value
+        });
+      }
+
+      function handleEmailChange(e) {
+        // person.email = e.target.value;
+        setPerson({
+          ...person,
+          email: e.target.value
+        });
+      }
+
+      return (
+        <>
+          <label>
+            First name:
+            <input
+              value={person.firstName}
+              onChange={handleFirstNameChange}
+            />
+          </label>
+          <label>
+            Last name:
+            <input
+              value={person.lastName}
+              onChange={handleLastNameChange}
+            />
+          </label>
+          <label>
+            Email:
+            <input
+              value={person.email}
+              onChange={handleEmailChange}
+            />
+          </label>
+          <p>
+            {person.firstName}{' '}
+            {person.lastName}{' '}
+            ({person.email})
+          </p>
+        </>
+      );
+    }
+
+    function App() {
+      return(
+        <>
+          <Name name={user.name} age={user.age}/>,
+          <Form />
+        </>
+      );
+    }
     //类似vue中的el选项
     const root = ReactDOM.createRoot(document.getElementById('app'))
-    root.render( 
-      <Name name={user.name} age={user.age}/>,//类似vue中的template
-    )
+    root.render(<App/>)
   </script>
 
 </body>
