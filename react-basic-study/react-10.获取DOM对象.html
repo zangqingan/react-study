@@ -14,11 +14,18 @@
   <div>
     <h3>1.概述</h3>
     <pre>
+
+        有时候希望直接能操作原生DOM对象、这时就要使用ref 引用值 。
+        useRef Hook 返回一个对象，该对象有一个名为 current 的属性。
+        最初: myRef.current 是 null、关联后就会把DOM节点的引用放入 myRef.current。
+
         1.创建一个容器用来存储DOM对象、使用useRef() 钩子函数
-        const divRef = useRef()
-        2. 在html标签或react组件上使用 ref属性等于useRef()钩子生成的对象即可。
-        div ref={divRef}>/div
-        divRef.current 就是返回原生的DOM对象。
+          import { useRef } from 'react';
+          const divRef = useRef(null)
+        2. 将 ref 作为 ref 属性值传递给想要获取的 DOM 节点的 JSX 标签
+        也就是在html标签或react组件上使用 ref属性等于useRef()钩子生成的对象即可。
+          div ref={divRef}>/div
+          divRef.current 就是返回原生的DOM对象。
 
     </pre>
   </div>
