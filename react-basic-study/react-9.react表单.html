@@ -12,130 +12,134 @@
   </div>
   <hr>
   <div>
-    <h4>1.react表单</h4>
-    <p>
+    <h3>1.react表单</h3>
+    <pre>
+
+      1.概述
       在 React 里,HTML 表单元素的工作方式和其他的 DOM 元素有些不同,这是因为表单元素通常会保持一些内部的 state。
-      例如:原生表单具有默认的 HTML 表单行为,即在用户提交表单后浏览到新页面。
+      例如:原生表单具有默认的 HTML 表单行为,即在用户提交表单后浏览会刷新页面。
       在 HTML 中,表单元素(如input、 textarea 和 select)通常自己维护 state,并根据用户输入进行更新。
       而在 React 中,可变状态(mutable state)通常保存在组件的 state 属性中,并且只能通过使用 setState()来更新。
-      也就是说要实现vue中的数据双向绑定你需要自己写,这个叫受控组件。
-      由于在表单元素上设置了 value 属性,因此显示的值将始终为 this.state.value,这使得 React 的 state 成为唯一数据源。
+
+      
+      由于在表单元素上设置了 value 属性,因此显示的值将始终为 state 的值,这使得 React 的 state 成为唯一数据源。
       由于 handlechange 在每次按键时都会执行并更新 React 的 state,因此显示的值将随着用户输入而更新。
+      也就是说要实现vue中的数据双向绑定你需要自己写,而这在react中叫受控组件。
 
-      在 HTML 中, textarea元素通过其子元素定义其文本:而在 React 中,  textarea使用 value 属性代替。这样可以使得使用 textarea 的表单和使用单行 input 的表单非常类似
+      2.常见控件元素
 
-      select 创建下拉列表标签。React 并不会使用 selected 属性,而是在根 select 标签上使用 value 属性设置默认选中。
+      input元素-它是利用value属性绑定state值、然后通过onChange事件触发 setState()进而更新值。
+        input type="text" value={state.value} onChange={handleChange} 
+      
+
+      textarea元素-和input一样
+      textarea value={answer} onChange={handleTextareaChange}
+
 
 
 
       
-    </p>
+    </pre>
   </div>
 
 
-
+  <!-- js -->
   <script src="./js/react.development.js" ></script>  
   <script src="./js/react-dom.development.js" ></script>
   <script src="./js/babel.min.js"></script>
+  <!-- react -->
   <script type="text/babel">
-    class NameForm extends React.Component {
-      constructor(props) {
-        super(props);
-        this.state = {value: ''};
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-      }
 
-      handleChange(event) {    this.setState({value: event.target.value});  }
-      handleSubmit(event) {
-        alert('提交的名字: ' + this.state.value);
-        event.preventDefault();
+    function NameForm(props) {
+      const [nameData,setNameData] = React.useState({username: ''})
+      function  handleChange(event) {
+        setNameData({username:event.target.value})
       }
-
-      render() {
-        return (
-          <form onSubmit={this.handleSubmit}>        
+      function handleSubmit(event) {
+        alert('提交的名字: ' + nameData.username)
+        event.preventDefault()
+      }
+      return(
+        <>
+          <form onSubmit={handleSubmit}>        
             <label>名字:
-              <input type="text" value={this.state.value} onChange={this.handleChange} />        
+              <input type="text" value={nameData.username} onChange={handleChange} />        
             </label>
               <input type="submit" value="提交" />
           </form>
-        );
-      }
+          <br/>
+          <div>
+            输入框输入的内容是：{nameData.username}  
+          </div>
+        </>
+      )
     }
-    class EssayForm extends React.Component {
-      constructor(props) {
-        super(props);
-        this.state = {      value: '请撰写一篇关于你喜欢的 DOM 元素的文章.'    };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-      }
 
-      handleChange(event) {    this.setState({value: event.target.value});  }
-      handleSubmit(event) {
-        alert('提交的文章: ' + this.state.value);
-        event.preventDefault();
+    function EssayForm() {
+      const [msgData,setMsgData] = React.useState({title: '请撰写一篇关于你喜欢的 DOM 元素的文章.'})
+      function handleChange(event) {
+        setMsgData({title:event.target.value})
       }
-
-      render() {
-        return (
-          <form onSubmit={this.handleSubmit}>
+      function handleSubmit(event) {
+        alert('提交的文章: ' + msg)
+        event.preventDefault()
+      }
+      return (
+        <>
+          <form onSubmit={handleSubmit}>
             <label>
               文章:
-              <textarea value={this.state.value} onChange={this.handleChange} />        </label>
-            <input type="submit" value="提交" />
-          </form>
-        );
-      }
-    }
-    class FlavorForm extends React.Component {
-      constructor(props) {
-        super(props);
-        this.state = {value: 'coconut'};
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-      }
-
-      handleChange(event) {    this.setState({value: event.target.value});  }
-      handleSubmit(event) {
-        alert('你喜欢的风味是: ' + this.state.value);
-        event.preventDefault();
-      }
-
-      render() {
-        return (
-          <form onSubmit={this.handleSubmit}>
-            <label>
-              选择你喜欢的风味:
-              <select value={this.state.value} onChange={this.handleChange}>            <option value="grapefruit">葡萄柚</option>
-                <option value="lime">酸橙</option>
-                <option value="coconut">椰子</option>
-                <option value="mango">芒果</option>
-              </select>
+              <textarea value={msgData.title} onChange={handleChange} />
             </label>
             <input type="submit" value="提交" />
           </form>
-        );
+          <div>
+              输入的文章内容是：{msgData.title}  
+          </div>
+        </>
+      )
+    }
+
+    function FlavorForm() {
+      const [like,setLike] = React.useState({value: 'coconut'})
+      function handleChange(event) {
+        setLike({value: event.target.value})
       }
+      function handleSubmit(event) {
+        alert('你喜欢的风味是: ' + like)
+        event.preventDefault()
+      }
+      return (
+        <form onSubmit={handleSubmit}>
+          <label>
+            选择你喜欢的风味:
+            <select value={like} onChange={handleChange}>
+              <option value="grapefruit">葡萄柚</option>
+              <option value="lime">酸橙</option>
+              <option value="coconut">椰子</option>
+              <option value="mango">芒果</option>
+            </select>
+          </label>
+          <input type="submit" value="提交" />
+        </form>
+      )
     }
     
-    class App extends React.Component{
-      render(){
-        return(
-          <div>
-              <NameForm/>
-              <hr/>
-              <EssayForm/>
-              <hr/>
-              <FlavorForm/>
-          </div>
-        )
-      }
+    function App() {
+      return(
+        <div>
+          <NameForm/>
+          <hr/>
+          <EssayForm/>
+          <hr/>
+          <FlavorForm/>
+        </div>
+      )
     }
-    ReactDOM.render(
-      <App />,
-      document.getElementById('app')
-    );
+
+    const root = ReactDOM.createRoot(document.getElementById('app'))
+    root.render(<App />)
+
   </script>
 
 </body>

@@ -46,6 +46,7 @@
           /div>  
 
     </pre>
+    <img src="./images/组件基础.png" alt=""><br>
     <h3>2.组件通信</h3>
     <pre>
 
@@ -89,7 +90,6 @@
             // ...
           }
         
-        
 
     </pre>
     <h3>3.组件的复用和组合</h3>
@@ -112,7 +112,34 @@
       对 JavaScript 模块之间的关系进行建模是了解应用程序的另一种有用方式。我们将其称为模块依赖树。
       这是因为一个组件抽离后就是一个js文件模块、每一个js文件模块就是一个节点。
     </pre>
-    <img src="./images/组件基础.png" alt=""><br>
+    <h3>5.组件跨级通信</h3>
+    <pre>
+
+      使用props在深层组件通信时就会变的十分冗长和不便。这时使用Context 允许父组件向其下层无论多深的任何组件提供信息，而无需通过 props 显式传递。
+      通过以下三个步骤来实现它：
+        1.创建 一个 context。
+        LevelContext.js
+          import { createContext } from 'react';
+          export const LevelContext = createContext(1);它需要一个默认值、可以时任意类型的JavaScript值。
+
+        2.在需要数据的组件内使用刚刚创建的 context。
+        Heading.js
+          import { useContext } from 'react';
+          引入
+          import { LevelContext } from './LevelContext.js';
+          使用
+          const level = useContext(LevelContext); 访问上层最近的 LevelContext 提供的值
+        useContext也是一个 Hook、和useState 以及 useReducer一样只能在 React 组件中调用。
+
+        3.在指定数据的组件中提供这个 context。
+        import { LevelContext } from './LevelContext.js';
+          用 context provider 包裹起来就是一个组件写法包裹
+          LevelContext.Provider value={level}这里是要提供的值 >
+
+
+
+    </pre>
+
   </div>
 
   <script src="./js/react.development.js" ></script>  

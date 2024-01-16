@@ -83,6 +83,29 @@
       组件第一次执行(调用render函数时)、
       组件状态state改变都会触发渲染(执行setter函数更新状态后)
     </pre>
+    <h3>4.组件状态提升</h3>
+    <pre>
+
+      当希望两个组件的状态始终同步更改、可以将相关 state 从这两个组件上移除，并把 state 放到它们最近的公共父级组件上，
+      然后通过 props 将 state 传递给这两个子组件。这被称为组件的“状态提升”。
+      需要分 3 步将状态“提升”到他们的父组件中。
+        1.从子组件中 移除 state 。
+        2.从父组件 传递 硬编码数据、即通过props传递原来的state状态变量名。
+        3.为最近的共同的父组件添加 state ，并将其与事件处理函数一起向下传递。
+
+    </pre>
+    <h3>5.Reducer </h3>
+    <pre>
+
+      当组件内的state状态很多时可以将组件的所有状态更新逻辑整合到一个外部函数中、这个函数叫作 reducer。
+      也就是说 Reducer 可以整合组件的状态更新逻辑、它是由useReducer 这个Hook创建的。
+      Reducer 是处理状态的另一种方式。你可以通过三个步骤将 useState 迁移到 useReducer
+        将设置状态的逻辑 修改 成 dispatch 的一个 action
+        编写 一个 reducer 函数；
+        在你的组件中 使用 reducer。
+
+
+    </pre>
   </div>
 
   <!-- js -->
@@ -168,11 +191,56 @@
       );
     }
 
+    function Accordion() {
+      const [activeIndex, setActiveIndex] = React.useState(0);
+      return (
+        <>
+          <h2>组件状态提升</h2>
+          <Panel
+            title="关于"
+            isActive={activeIndex === 0}
+            onShow={() => setActiveIndex(0)}
+          >
+            阿拉木图人口约200万，是哈萨克斯坦最大的城市。它在 1929 年到 1997 年间都是首都。
+          </Panel>
+          <Panel
+            title="词源"
+            isActive={activeIndex === 1}
+            onShow={() => setActiveIndex(1)}
+          >
+            这个名字来自于 <span lang="kk-KZ">алма</span>，哈萨克语中“苹果”的意思，经常被翻译成“苹果之乡”。事实上，阿拉木图的周边地区被认为是苹果的发源地，<i lang="la">Malus sieversii</i> 被认为是现今苹果的祖先。
+          </Panel>
+        </>
+      );
+    }
+
+    function Panel({
+      title,
+      children,
+      isActive,
+      onShow
+    }) {
+      return (
+        <section className="panel">
+          <h3>{title}</h3>
+          {isActive ? (
+            <p>{children}</p>
+          ) : (
+            <button onClick={onShow}>
+              显示
+            </button>
+          )}
+        </section>
+      );
+    }
+
     function App() {
       return(
         <>
           <Name name={user.name} age={user.age}/>,
           <Form />
+          <br/>
+          <Accordion />
         </>
       );
     }
