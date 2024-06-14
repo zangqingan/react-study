@@ -83,8 +83,32 @@ $ npm install eslint@^8.0.0 eslint-plugin-react eslint-plugin-react-hooks --save
     }
   }
 ```
-自创建项目目录结构如下：
 
+创建项目目录结构如下:
+```
+项目名(文件名)
++-- dist[目录]                      // 编译后的目录，用于预览项目
++-- public[目录]                    // 公共静态资源
++-- node_modules[目录]              // 项目使用的包目录，开发使用和上线使用的都在里边
++-- src[目录]                       // 源文件/代码，程序员主要编写的目录
+|  +-- component[目录]              // 公共组件文件
+|  +-- utils[目录]                  // 工具类
+|  +-- views[目录]                  // 页面
+|  +-- index.js                    // 项目的入口文件，里边包括项目的主模块和监听端口号
++-- .eslintrc.json                  // ESlint的配置文件
++-- package-lock.json              // 防止由于包不同，导致项目无法启动的配置文件，固定包版本
++-- package.json                   // 项目依赖包管理文件和Script文件，比如如何启动项目的命令
+
+```
+
+集成typescript、在项目中添加 @types/react 和 @types/react-dom 即可获得完整的 React Web 支持。
+```bash
+$ npm install @types/react @types/react-dom
+```
+然后在 tsconfig.json 中设置以下编译器选项:
+```js
+
+```
 
 
 # 四、react-createApp-study
