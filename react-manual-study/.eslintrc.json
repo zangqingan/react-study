@@ -1,0 +1,33 @@
+{
+    "env": {
+      "browser": true,
+      "es6": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2023,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
+    "extends": "react-app",
+    "plugins": [
+      "react",
+      "react-hooks"
+    ],
+    "rules": {
+      "react/react-in-jsx-scope": "off", // React 17及以上版本不需要import React from 'react'
+      "react/jsx-uses-vars": "error",
+      "react/jsx-uses-react": "error",
+      "react-hooks/rules-of-hooks": "error", // 检查Hook的规则
+      "react-hooks/exhaustive-deps": "warn", // 检查effect的依赖项是否完整
+      "react/jsx-indent": ["error", 2], // JSX缩进为2个空格
+      "react/jsx-indent-props": ["error", 2], // JSX属性缩进为2个空格
+      "react/jsx-curly-spacing": ["error", "always"], // 大括号内需要有空格
+      "react/jsx-key": "error", // 确保数组中的元素有key属性
+      "react/no-unescaped-entities": "error", // 禁止在JSX字符串中使用未转义的字符
+      "react/self-closing-comp": "error", // 鼓励自闭合组件
+      "react/jsx-max-props-per-line": ["error", { "maximum": 1 }], // 每行最大属性数
+      "react/jsx-first-prop-new-line": ["error", "multiline"] // 多行JSX元素的第一个属性独占一行
+    }
+  }

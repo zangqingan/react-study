@@ -13,25 +13,28 @@
   </div>
   <pre>
     react的使用跟vue类似也是分三步即可。学习时使用本地或者CDN链接(通过 CDN 的方式引入时需设置script标签的 crossorigin 属性这样可以有更好的错误处理体验)即可。
-      1.引入React核心库,react.development.js会暴露React类创建元素组件时用,
+      1.引入相关的库：
+        react.development.js 会暴露 React类 创建元素组件时用,
         react-dom.development.js(生产环境换成production.min.js)会暴露ReactDOM类操作虚拟DOM时用
         以及Babel编译器 babel.min.js以便使用JSX语法。
       2.添加一个DOM容器,React组件会替换DOM容器内的任何已有内容
       3.加载自己定义的 React 组件,在script标签中使用jsx 要添加 type="text/babel" 属性
-
-    React 应用程序的组成部分:元素和组件。
   </pre>
   <pre>
     这两个核心包提供了3个核心API
+
     1. React.createElement() 创建一个react元素或组件、接受3个参数
       参数一: 元素名(html标签必须小写)/ 组件名
       参数二: 元素属性描述对象 {id: 'name',className:'btn'}、事件使用小驼峰命名方式
       参数三: 元素的内容(子元素)、多个时逗号分隔
-    本质是使用js来描述一个DOM节点对象也就是虚拟DOM、最终经过Babel的编译会生成真实DOM。这种其实就是命令式编程的写法。
+    本质是使用js来描述一个DOM节点对象也就是虚拟DOM、最终经过Babel的编译会生成真实DOM。
+    这种其实就是命令式编程的写法。
 
-    react 18 之后对react 17 之前原render方法分开了、即先创建根元素、然后由根元素调用render方法。
+    
     2. ReactDOM.createRoot() 获取根元素就是react元素要插入的位置一般一个react应用只有一个根元素。
       参数: 它接受一个html节点对象如: document.getElementById('app')。
+
+    react 18 之后对react 17 之前原render方法分开了: 即先创建根元素、然后由根元素调用render方法。
 
     react 17 之前写法
       const element = Hello, world
@@ -56,10 +59,16 @@
   <script src="./js/babel.min.js"></script>
   <!-- 3.加载自己定义的 React 组件，当然这个一般是抽离成js文件引入的。-->
   <script type="text/babel">
+    // react元素
     const myH1 = React.createElement('h1',{},'hello world React18')//类似vue中的template,也是可以定义一个变量接收抽离出去的。最终还是编译成js的。
+    // 也可以定义react组件传入
+    function MyApp() {
+      return <h1>Hello, world!</h1>;
+    }
     const root = ReactDOM.createRoot(document.getElementById('app'))//类似vue中的el选项
     // 引入核心库后自动注入浏览器的对象类似Vue构造函数。
-    root.render(myH1)
+    // root.render(myH1)
+    root.render(<MyApp />);
   </script>
 
 </body>
