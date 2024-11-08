@@ -13,14 +13,14 @@
     <h3>1.react列表循环</h3>
     <pre>
 
-      有时我们会根据一个数据集合、重复渲染一个类似的组件这时就需要用到列表渲染。
+      有时我们会根据一个数据集合、重复渲染一个类似的组件这时就需要用到列表渲染。和vue封装成循环指令不同、react中是原生js数组循环方法实现的。
       它的本质是使用JavaScript 数组的 filter() 和 map() 来实现数组的过滤和转换，将数据数组转换为组件数组。
 
       需要注意的是在遍历时应当给数组中的每一个元素赋予一个确定的唯一标识-key、它可以是字符串或数字的形式。
       key 是用来帮助 React 识别哪些元素改变了,比如被添加或删除。React通过 key 来跟踪每个元素在列表中的位置
       一个元素的 key 最好是这个元素在列表中拥有的一个独一无二的字符串、通常使用数据中的 id 来作为元素的 key。
 
-      注意:Fragment 语法的简写形式 《> 《/> 是无法接受 key 值、所以可以使用一个div元素包裹或者写完 《Fragment key={xxx}>《/Fragment>
+      注意:Fragment 语法的简写形式 &lt; &gt;  &lt; / &gt; 是无法接受 key 值、所以可以使用一个div元素包裹或者写完 《Fragment key={xxx}>《/Fragment>
       注意:key在兄弟节点也就是同级别的jsx里是必须唯一的、同时值不能改变。
 
       本质是每个元素都会执行回调函数、而函数是可以return返回jsx的。这时组合好想要的jsx返回即可。
@@ -29,9 +29,6 @@
 
       filter()方法是先过滤返回符合条件的项之后可以再使用map方法组合jsx、它们是可以链式调用的。
       const result = arr.filter().map()
-
-
-      
 
     </pre>
   </div>
@@ -42,29 +39,41 @@
   <script src="./js/react-dom.development.js" ></script>
   <script src="./js/babel.min.js"></script>
   <script type="text/babel">
-    const people = [
+     const people = [
       {
-        id: 0,
+        id: 0, // 在 JSX 中作为 key 使用
         name: '凯瑟琳·约翰逊',
         profession: '数学家',
+        accomplishment: '太空飞行相关数值的核算',
+        imageId: 'MK3eW3A',
       },
       {
-        id: 1,
+        id: 1, // 在 JSX 中作为 key 使用
         name: '马里奥·莫利纳',
         profession: '化学家',
+        accomplishment: '北极臭氧空洞的发现',
+        imageId: 'mynHUSa',
       },
       {
-        id: 2,
+        id: 2, // 在 JSX 中作为 key 使用
         name: '穆罕默德·阿卜杜勒·萨拉姆',
         profession: '物理学家',
+        accomplishment: '关于基本粒子间弱相互作用和电磁相互作用的统一理论',
+        imageId: 'bE7W1ji',
       },
       {
+        id: 3, // 在 JSX 中作为 key 使用
         name: '珀西·莱温·朱利亚',
         profession: '化学家',
+        accomplishment: '开创性的可的松药物、类固醇和避孕药',
+        imageId: 'IOjWm71',
       },
       {
+        id: 4, // 在 JSX 中作为 key 使用
         name: '苏布拉马尼扬·钱德拉塞卡',
         profession: '天体物理学家',
+        accomplishment: '白矮星质量计算',
+        imageId: 'lrWQx8l',
       },
     ]
 
@@ -91,12 +100,13 @@
     }
 
     function ShowChemists() {
-      const chemitsList = people.filter(person => person.profession === '天体物理学家').map(item => {
+      const chemitsList = people.filter(person => person.profession !== '天体物理学家').map(item => {
         return (
           <li key={item.id}>
             <p>
               <b>{item.name}:</b>
               {' ' + item.profession + ' '}
+              因{item.accomplishment}而闻名世界
             </p>
           </li>
         )

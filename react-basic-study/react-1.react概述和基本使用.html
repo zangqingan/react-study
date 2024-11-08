@@ -11,11 +11,12 @@
   <div id="app">
     
   </div>
+
   <pre>
     react的使用跟vue类似也是分三步即可。学习时使用本地或者CDN链接(通过 CDN 的方式引入时需设置script标签的 crossorigin 属性这样可以有更好的错误处理体验)即可。
       1.引入相关的库：
-        react.development.js 会暴露 React类 创建元素组件时用,
-        react-dom.development.js(生产环境换成production.min.js)会暴露ReactDOM类操作虚拟DOM时用
+        react.development.js 会暴露 React类-创建元素组件时用,
+        react-dom.development.js(生产环境换成production.min.js)会暴露ReactDOM类操作虚拟DOM时用,
         以及Babel编译器 babel.min.js以便使用JSX语法。
       2.添加一个DOM容器,React组件会替换DOM容器内的任何已有内容
       3.加载自己定义的 React 组件,在script标签中使用jsx 要添加 type="text/babel" 属性
@@ -37,11 +38,11 @@
     react 18 之后对react 17 之前原render方法分开了: 即先创建根元素、然后由根元素调用render方法。
 
     react 17 之前写法
-      const element = Hello, world
+      const element = 'Hello, world'
       ReactDOM.render(element, document.getElementById('root'))
 
     react 18 之后写法
-      const element = Hello, world
+      const element = 'Hello, world'
       const root = ReactDOM.createRoot(document.getElementById('root'))
       root.render(element)
 
@@ -51,15 +52,16 @@
       每次执行render都会重新渲染
   </pre>
 
-  <!-- 1.引入React核心库 -->
+  <!-- 1.引入React核心库、react的渲染器、babel编译器。-->
   <!-- 注意: 部署时，将 "development.js" 替换为 "production.min.js"。-->
   <script src="./js/react.development.js" ></script>  
   <script src="./js/react-dom.development.js" ></script>
   <!-- 在script标签中使用jsx 添加 type="text/babel" 属性。-->
   <script src="./js/babel.min.js"></script>
-  <!-- 3.加载自己定义的 React 组件，当然这个一般是抽离成js文件引入的。-->
+
+  <!-- 3.加载自己定义的 React 组件，当然这个一般是抽离成jsx文件引入的。-->
   <script type="text/babel">
-    // react元素
+    // 定义react元素传入
     const myH1 = React.createElement('h1',{},'hello world React18')//类似vue中的template,也是可以定义一个变量接收抽离出去的。最终还是编译成js的。
     // 也可以定义react组件传入
     function MyApp() {

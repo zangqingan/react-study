@@ -14,28 +14,39 @@
     <pre>
 
       React 允许你向 JSX 中添加事件处理程序、事件处理程序就是自定义的函数、它将在用户交互时被触发、如点击、悬停、焦点在表单输入框上等等。
+
       React 元素的事件处理和 DOM 元素的很相似、但是有一点语法上的不同、
         React 事件的命名采用小驼峰式(camelCase)、而不是纯小写。
-        自定义的事件名通常也是以on-事件名命名、也通过props传递进组件内部。
-        同时使用 JSX 语法时需要传入一个函数作为事件处理函数、而不是一个字符串。
-        事件处理函数通常是在组件内部定义、名称以 handle 开头、后跟事件名称。
+        对于 button 等内置组件只支持内置浏览器事件，如 onClick
+        而自定义的事件名通常也是以on-事件名命名(大写字母)、也通过props传递进组件内部。
+        
+        同时使用 JSX 语法时需要传入一个函数作为事件处理函数、而不是一个字符串、也就是函数对象而不是执行函数。
+        事件处理函数通常是在组件内部定义、名称以 handle 开头、后跟事件名称。由于事件处理函数声明于组件内部，因此它们可以直接访问组件的 props。
+
         <img src="./images/react事件处理.png" alt="">
         阻止默认行为必须显式的使用 preventDefault声明。
-      
-        在 JSX 中定义一个内联的事件处理函数
-        button onClick={function handleClick() {
+
+        传统HTML声明事件
+        function handleClick() {
           alert('你点击了我！');
-        }}>
+        }
+        &lt;button onClick="handleClick()" /&gt;
+
+        在 JSX 中定义一个内联的事件处理函数
+        &lt;button onClick={function handleClick() {
+          alert('你点击了我！');
+        }} /&gt;
 
         使用箭头函数
-        button onClick={() => {
+        &lt;button onClick={() => {
           alert('你点击了我！');
-        }}>
+        }} /&gt;
 
         但是一般是抽离声明一个事件处理函数、然后是传递这个函数对象。
         在发生交互时react会自动帮执行事件处理函数。
         function handleClick() {}
-        button onClick={handleClick}>
+        &lt;button onClick={handleClick}>/&gt;
+
 
     </pre>
     <h3>2.事件的传播</h3>
@@ -71,10 +82,33 @@
         </button>
       )
     }
+    function Toolbar({ onPlayMovie, onUploadImage }) {
+      return (
+        <div>
+          <Button onClick={onPlayMovie}>
+            Play Movie
+          </Button>
+          <Button onClick={onUploadImage}>
+            Upload Image
+          </Button>
+        </div>
+      );
+    }
+
+    function Button({ onClick, children }) {
+      return (
+        <button onClick={onClick}>
+          {children}
+        </button>
+      );
+    }
 
     function App() {
       return (
-        <Toggle1 />
+        <> 
+          <Toggle1 />
+          <Toolbar onPlayMovie={() => alert('Playing!')} onUploadImage={() => alert('Uploading!')} />
+        </>
       )
     }
 

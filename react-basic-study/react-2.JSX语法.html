@@ -14,11 +14,11 @@
     <pre>
 
       1. 定义
-        const element = h1> Hello, world! /h1>; 这种标签语法既不是JavaScript字符串也不是 HTML,
+        类似 const element = &lt;h1&gt; Hello, world! &lt;/h1&gt;; 这种标签语法既不是JavaScript字符串也不是 HTML,
         而是在js中书写html标签的语法就被称为:JSX,它是 JavaScript 语法扩展的意思。
         它可以让你在 JavaScript 文件中书写类似 HTML 的标签。
 
-        JSX 的作用是用来生成一个 React “元素”,然后react会将这些元素渲染为页面中的真实DOM、
+        JSX 的作用是用来生成一个 React “元素”或者组件,然后react会将这些元素/组件渲染为页面中的真实DOM、
         也就是说通过jsx语法可以直接在js里写html标签而不是使用之前的createElement()方法来生成 React “元素”。
         可以在 if、for语句中使用jsx、也可以参数传递给函数或者作为函数的返回值使用。
         if(isShow) {
@@ -34,13 +34,13 @@
         }
 
       2.注意事项
-        注意:跟vue类似也是只能有一个根元素,原生html标签小写、react组件大写。也就是组件要返回多个元素、那么需要使用一个父标签包裹它们才能返回。
-        如果不需要指定父标签则需要使用一个空标签包裹(也就是只写尖括号)、这个标签也叫片段 Fragment 它就是起到一个分组作用不会在DOM树上添加额外节点。
+        注意:跟vue类似也是只能有一个根元素,原生html标签小写、react组件首字母大写。也就是组件要返回多个元素、那么需要使用一个父标签包裹它们才能返回。
+        如果不需要指定父标签则需要使用一个空标签包裹(也就是只写尖括号)、这个标签也叫片段 Fragment(简写&lt; &gt; ... &lt;/ &gt;) 它就是起到一个分组作用不会在DOM树上添加额外节点。
         这是因为jsx在底层会被转化为一个 JavaScript 对象。
 
         注意: 因为 JSX 语法上更接近 JavaScript 而不是 HTML,所以 React DOM 是使用 camelCase(小驼峰命名)来定义大部分属性的名称,而不使用 HTML 属性名称的命名约定。
         这是因为JSX 最终会被转化为 JavaScript、而 JSX 中的属性也会变成 JavaScript 对象中的键值对、而JavaScript对变量名是有命名规范的。
-        比较常见的是css类名要使用 className因为 class在JavaScript中是保留字
+        比较常见的是css类名要使用 className、因为 class 在JavaScript中是保留字
         然后是样式等常见的使用短横线 - 连接的属性名要去掉 - 改成小驼峰形式
         如: background-color --》 backgroundColor 
         同时标签必须闭合、自闭合标签也要写上反斜杠结束。
@@ -50,7 +50,7 @@
         字符串属性时使用单引号或者双引号括起来即可。
         在 JSX 语法中,你可以在一个大括号 { //js变量、表达式、函数调用、注释 } 内放置任何有效的 JavaScript 表达式、注释等。
         {} 类似 vue 的插值表达式,用来输出简单的js表达式/变量等。
-        不同在于react中当表达式值为空值、undefined、布尔值时不显示任何内容。
+        不同在于react中当表达式值为:null空值、undefined、布尔值时不显示任何内容。
         内联样式要使用对象设置即: style='{{ width:'100px'}}'
         注释:{/* 注释内容  */}
 

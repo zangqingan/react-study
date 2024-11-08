@@ -16,13 +16,14 @@
       1.概述
         组件允许你将 UI 拆分为一个个独立可复用的代码片段、并对每个片段进行独立构思。
         也就是说组件是由独立的 UI 片段构建而成,它和vue中的组件是一个意思是一个小功能或页面的抽象。
-        它从概念上类似于 JavaScript 函数、它也接受任意的形参(用 “props”对象标识)、并返回用于描述页面展示内容的 React 元素即jsx。
-        简单理解就是react组件就是一个返回react元素的js函数、区别在于这个函数里使用的是JSX语法、同时函数名(组件名)首字母必须大写。
+
+        React 组件本质上是可以任意添加标签的 JavaScript 函数、所以它也接受任意的形参(用 “props”对象标识)、并返回用于描述页面展示内容的 React 元素即jsx。
+        简单理解就是react组件就是一个返回react元素的js函数、区别在于这个函数里使用的是JSX语法而不是命令式的声明react元素、同时函数名(组件名)首字母必须大写。
 
       2.分类
         react组件的声明方式有两种:函数组件(常用)和class组件
 
-        1.函数组件、用function关键字声明本质上就还是js函数、不过要注意首字母必须大写。
+        1.函数组件、用 function 关键字声明本质上就还是js函数、不过要注意首字母必须大写。
           function Welcome(props) {
             return h1>Hello、 {props.name} /h1>;//返回的是 react元素 也就是jsx
           }
@@ -38,12 +39,14 @@
         同时函数体内使用的是JSX语法并且一般返回的是一个react元素、返回的react元素和return关键字不在同一行时必须使用括号()包裹表示一个整体。
         因为react会将以小写字母开头的组件视为原生 DOM 标签。
 
+        注意： 永远不要在组件中定义组件。
+
       3.组件的使用
           和vue也是类似的、定义组件之后就像使用原生html标签一样使用react组件、react元素可以是原生的HTML标签也可以是react组件。
           组件在定义时也是可以使用已经定义好的其它组件的、这时就形成了组件的嵌套。
-          const element = div className="UserInfo">
-              《 自定义react组件名(首字母要大写) /》 。
-          /div>  
+          const element = &lt;div className="UserInfo"&gt;
+            &lt; 自定义react组件名(首字母要大写) /&gt; 。
+          &lt;/div&gt;  
 
     </pre>
     <img src="./images/组件基础.png" alt=""><br>
@@ -55,34 +58,32 @@
           也就是react函数组件都会接受一个唯一的名为 props 的参数对象、它是组件之间通信的基础。它可以传递任何 JavaScript 的值包括对象、数组、函数、甚至是 JSX!
           它是像HTML属性一样在使用react组件时传递给jsx。
           这时自定义组件内部就可以像使用变量一样通过 props.属性名 访问接收的参数、要传入参数时使用 {} 即可。
-        如: 《 自定义react组件名 name="David" age=23 gender={变量名} /》
+        如: &lt; 自定义react组件名 name="David" age=23 gender={变量名} /&gt;
           组件内部: 
           function 自定义react组件名(props) {
-            props.name、props.age、props.gender 就可以读取到传入的参数值。
+            {props.name}、{props.age}、{props.gender} 就可以读取到传入的参数值。
           }
           等价的解构使用: 
           function 自定义react组件名({name,age,gender}) {
-            name,age,gender 就可以直接读取到对应的参数值。
+            {name},{age},{gender} 就可以直接读取到对应的参数值。
           }
         注意:props的命名从组件自身的角度命名 props、而不是依赖于调用组件的上下文命名。
         组件无论是使用函数声明还是通过 class 声明、都决不能修改自身的 props而是只是读取。跟vue类似不能直接在子组件内部手动修改。
-        即单向数据流所有 React 组件都必须像纯函数一样保护它们的 props 不被更改。
+        即单向数据流所有 React 组件都必须像纯函数一样保护它们的 props 不被更改。 要想修改值要使用'state'状态来改变。
 
         注意: 当传递一个组件时、这时父组件将在名为 children 的 prop 中接收到该内容。
         使用时:
-        《 父组件 name="David" age=23 gender={变量名} 》
+        &lt;父组件 name="David" age=23 gender={变量名} &gt;
           标签内的任何 JSX 都将作为 children prop 传递给该组件。
-          《 子组件 》
+          &lt;子组件&gt;
 
-          《 /子组件  》
-        《 /父组件  》
+          &lt; /子组件 &gt;
+        &lt; /父组件  &gt;
 
         接收:
         function 父组件({ children }) {
           {children} 这样即可把传入的子组件渲染展示出来。
         }
-
-        要想修改值要使用'state'状态来改变。
 
         2. props默认值
           在没有指定值或者值等于undefined的情况下给 prop 一个默认值，你可以通过在参数后面写 = 和默认值来进行解构。
@@ -98,7 +99,7 @@
       所以一般组件是抽离单独放到一个文件里的、也就是一个组件就是一个js文件、这时通过es6的模块语法即可实现组件的导入导出进而实现相互使用。
       要注意es6模块语法的使用规范即可。
 
-      注意: 组件可以渲染其他组件、但是永远不要嵌套他们的定义、也就是永远不要在一个组件中定义另一个组件。都在顶层定义即可。
+      注意: 组件可以渲染其他组件、但是永远不要嵌套他们的定义、也就是永远不要在一个组件中定义另一个组件。而是都在顶层定义即可。
 
       注意: 当使用构建工具后react也是有一个根组件、然后其它组件都是它的后代组件。
 
@@ -202,7 +203,7 @@
     )
   }
 
-  // 定义父级组件 
+  // 定义父级组件
   function Welcome(props) {
       return (
         <div>
@@ -212,9 +213,11 @@
             // 跟vue组件类似传入props不过属性名前不用加:声明未动态绑定、react 会自动动态绑定。
             //date、text、author都是自己定义定义props属性名、即Comment组件内部使用props.属性名访问的。
             //即:props.date、props.text、props.author
+            // 也可以在形参传递时直接解构传入 Welcome({date,text,author})
             */
           }
           <Comment date={comment.date} text={comment.text} author={comment.author} />
+          <Comment {...comment} />
        </div>
       )
   }

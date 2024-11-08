@@ -4,25 +4,28 @@ react框架的学习记录
 
 # 一、react概述
 [官网:](https://reactjs.org)
-React:  它是一个用于构建用户界面(UI)的 JavaScript 库。跟vue类似React也是渐进式的、也可以被逐步采用的即可以按需引入需要的功能模块。
+React: 它是一个用于构建 Web 和原生交互界面的JavaScript 库。跟vue类似React也是渐进式的、也可以被逐步采用的即可以按需引入需要的功能模块。
+
+react目前是16、18两个大版本会有区别，不过也是增量更新并没有说改变很大。
 
 # 二、react-basic-study
-react基础语法的学习、这里我们依然不使用构建工具。
-基础引入需要3个包在本地进行开发、可以cdn引入也可以下载到本地。
+react基础语法的学习、这里我们依然不使用任何构建工具。
+基础引入需要3个包就可以在本地进行开发、可以cdn引入也可以下载到本地。
+这种只适合学习、实际生产是不会使用这种方法的。
 
 ```js
-// 1. react的核心库，会暴露 React类、提供了创建 react元素的方法。-React.createElement()
+// 1. react的核心库，会暴露 React类、提供了创建 react元素\组件的方法。- React.createElement()
 <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-// 2. react的渲染器，会暴露 ReactDOM类、提供操作虚拟DOM的方法，用于将react元素渲染到页面上。
+// 2. react的渲染器，会暴露 ReactDOM类、提供操作虚拟DOM的方法，用于将react元素\组件渲染到页面上。
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 // 3. js的编译器，将jsx语法编译成js语法。
-// <!-- Don't use this in production: -->
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 ```
 
 # 三、react-manual-study
 
 使用npm 手动创建 react 项目学习、先要安装3个包 react、react-dom、react-scripts(提供了webpack等功能)
+
 ```bash
 # 初始化项目
 $ npm init -y 
