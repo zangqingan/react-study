@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>11.Effect</title>
+</head>
+<body>
+  <div id="app">
+    
+  </div>
+  <hr>
+  <div>
+    <h3>1.概述</h3>
+    <pre>
+      Effects 会在渲染后运行一些代码，以便可以将组件与 React 之外的某些系统同步。
+      编写 Effect 需要遵循以下三个规则：
+
+      1、声明 Effect。默认情况下，Effect 会在每次渲染后都会执行即：屏幕更新渲染之后执行。
+      2、指定 Effect 依赖。大多数 Effect 应该按需执行，而不是在每次渲染后都执行。例如，淡入动画应该只在组件出现时触发。连接和断开服务器的操作只应在组件出现和消失时，或者切换聊天室时执行。文章将介绍如何通过指定依赖来控制如何按需执行。
+      3、必要时添加清理（cleanup）函数。有时 Effect 需要指定如何停止、撤销，或者清除它的效果。例如，“连接”操作需要“断连”，“订阅”需要“退订”，“获取”既需要“取消”也需要“忽略”。你将学习如何使用 清理函数 来做到这一切。
+      
+      第一步：在 React 中引入 useEffect Hook
+      import { useEffect } from 'react';
+      
+      第二步：在组件顶部调用它，并传入在每次渲染时都需要执行的代码
+      function MyComponent() {
+        useEffect(() => {
+          // 每次渲染后都会执行此处的代码
+        });
+        return &lt;div &gt;;
+      }
+
+
+    </pre>
+  </div>
+
+
+
+  <script src="./js/react.development.js" ></script>  
+  <script src="./js/react-dom.development.js" ></script>
+  <script src="./js/babel.min.js"></script>
+  <script type="text/babel">
+
+
+  </script>
+
+</body>
+</html>

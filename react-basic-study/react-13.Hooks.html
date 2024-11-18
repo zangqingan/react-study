@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>11.react-Hook</title>
+</head>
+<body>
+  <div id="app"></div>
+  <hr>
+  <div>
+    <h3>1.概述</h3>
+    <pre>
+
+      在 React 中、useState 以及任何其他以“use”开头的函数都被称为 Hook()。Hook 是特殊的函数、只在 React 渲染时有效。
+      它只能在组件或自定义 Hook 的最顶层调用、不能在条件语句、循环语句或其他嵌套函数内调用 Hook。即:只有 Hook 和组件可以调用其他 Hook。
+
+      开发者也可以根据需要自定义hook、Hook 的名称必须永远以 use 开头然后紧跟一个大写字母，就像内置的 useState 或者本文早前的自定义 useOnlineStatus 一样。Hook 可以返回任意值。
+      自定义 Hook 共享的是状态逻辑，而不是状态本身、每当组件重新渲染，自定义 Hook 中的代码就会重新运行。
+      
+
+    </pre>
+  </div>
+
+
+
+  <script src="./js/react.development.js" ></script>  
+  <script src="./js/react-dom.development.js" ></script>
+  <script src="./js/babel.min.js"></script>
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+    function Form1() {
+      const [firstName, setFirstName] = useState('Mary');
+      const [lastName, setLastName] = useState('Poppins');
+
+      function handleFirstNameChange(e) {
+        setFirstName(e.target.value);
+      }
+
+      function handleLastNameChange(e) {
+        setLastName(e.target.value);
+      }
+
+      return (
+        <>
+          <label>
+            First name:
+            <input value={firstName} onChange={handleFirstNameChange} />
+          </label>
+          <label>
+            Last name:
+            <input value={lastName} onChange={handleLastNameChange} />
+          </label>
+          <p><b>Good morning, {firstName} {lastName}.</b></p>
+        </>
+      );
+    }
+    
+    // 提取重复的逻辑到自定义 Hook
+    function useFormInput(initialValue) {
+      const [value, setValue] = useState(initialValue);
+
+      function handleChange(e) {
+        setValue(e.target.value);
+      }
+
+      const inputProps = {
+        value: value,
+        onChange: handleChange
+      };
+
+      return inputProps;
+    }
+    
+    function Form2() {
+      const firstNameProps = useFormInput('Mary');
+      const lastNameProps = useFormInput('Poppins');
+
+      return (
+        <>
+          <label>
+            First name:
+            <input {...firstNameProps} />
+          </label>
+          <label>
+            Last name:
+            <input {...lastNameProps} />
+          </label>
+          <p><b>Good morning, {firstNameProps.value} {lastNameProps.value}.</b></p>
+        </>
+      );
+    }
+
+    // 显示时间
+    function useCounter() {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        const id = setInterval(() => {
+          setCount(c => c + 1);
+        }, 1000);
+        return () => clearInterval(id);
+      }, []);
+      return count;
+    }
+    function Counter() {
+      const count = useCounter();
+      return <h1>Seconds passed: {count}</h1>;
+    }
+    function App() {
+      return (
+        <div>
+          <Form1 />
+          <hr/>
+          <Form2 />
+          <hr/>
+          <Counter />
+        </div>
+      );
+    }
+    const root = ReactDOM.createRoot(document.getElementById('app'))
+    root.render(<App />)
+  </script>
+
+</body>
+</html>

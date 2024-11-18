@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style type="text/css">
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+      padding: 0;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 22px;
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 20px;
+    }
+
+    h3 {
+      margin-top: 0;
+      font-size: 18px;
+    }
+
+    h4 {
+      margin-top: 0;
+      font-size: 16px;
+    }
+
+    h5 {
+      margin-top: 0;
+      font-size: 14px;
+    }
+
+    h6 {
+      margin-top: 0;
+      font-size: 12px;
+    }
+
+    code {
+      font-size: 1.2em;
+    }
+
+    ul {
+      padding-inline-start: 20px;
+    }
+
+    button {
+      margin: 5px;
+    }
+    li {
+      list-style-type: none;
+    }
+    ul,
+    li {
+      margin: 0;
+      padding: 0;
+    }
+
+  </style>
+  <title>9.Reducer</title>
+</head>
+<body>
+  <div id="app"></div>
+  <hr>
+  <div>
+    <h3>1.Reducer </h3>
+    <pre>
+
+      当组件内的state状态很多时可以将组件的所有状态更新逻辑整合到一个外部函数中、这个函数叫作 reducer 减少的意思。
+      有点类似于vux中的action、提交改变会自动执行对于逻辑。
+      也就是说 Reducer 可以整合组件的状态更新逻辑、它是由 useReducer 这个 Hook 创建的。
+
+      本质上 Reducer 是处理状态的另一种方式。你可以通过三个步骤将 useState 迁移到 useReducer
+        1、将设置状态的逻辑 修改 成 dispatch 的一个 action
+        2、编写 一个 reducer 函数、reducer 函数就是你放置状态逻辑的地方。它接受两个参数，分别为当前 state 和 action 对象，并且返回的是更新后的 state。
+        3、在你的组件中 使用 reducer。
+        import { useReducer } from 'react';
+        const [tasks, setTasks] = useState(initialTasks);
+        const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
+        useReducer 钩子接受 2 个参数：
+          一个 reducer 函数
+          一个初始的 state
+        它返回如下内容：
+          一个有状态的值
+          一个 dispatch 函数(用来 “派发” 用户操作给 reducer)
+          
+        function tasksReducer(state,action) {
+
+        }
+
+
+
+    </pre>
+  </div>
+
+  <!-- js -->
+  <script src="./js/react.development.js" ></script>  
+  <script src="./js/react-dom.development.js" ></script>
+  <script src="./js/babel.min.js"></script>
+  <script type="text/babel">
+    const { useState, useReducer } = React
+
+    
+    // 添加待办
+    function AddToDo({onAddToDo}) {
+      const [text, setText] = useState('');
+      // 监听输入框的变化
+      const handleInputChange = (e) => {
+        setText(e.target.value);
+      };
+      // 点击添加按钮
+      const handleAdd = () => {
+        setText('');
+        onAddToDo(text);
+      };
+      
+      return (
+        <>
+          <input
+            placeholder="添加任务"
+            value={text}
+            onChange={(e) => handleInputChange(e)}
+          />
+          <button
+            onClick={handleAdd}>
+            添加
+          </button>
+        </>
+      );
+    }
+
+    // 待办列表项
+    function ToDoItem({task, onChangeTodoItem, onDeleteTodoItem}) {
+      // 是否可以编辑
+      const [isEditing, setIsEditing] = useState(false);
+      let taskContent;
+      if (isEditing) {
+        taskContent = (
+          <>
+            <input
+              value={task.text}
+              onChange={(e) => {
+                onChangeTodoItem({
+                  ...task,
+                  text: e.target.value,
+                });
+              }}
+            />
+            <button onClick={() => setIsEditing(false)}>保存</button>
+          </>
+        );
+      } else {
+        taskContent = (
+          <>
+            {task.text}
+            <button onClick={() => setIsEditing(true)}>编辑</button>
+          </>
+        );
+      }
+      return (
+        <label>
+          <input
+            type="checkbox"
+            checked={task.done}
+            onChange={(e) => {
+              onChangeTodoItem({
+                ...task,
+                done: e.target.checked,
+              });
+            }}
+          />
+          {taskContent}
+          <button onClick={() => onDeleteTodoItem(task.id)}>删除</button>
+        </label>
+      );
+    }
+    
+    // 待办列表
+    function ToDoList({tasks, onChangeTask, onDeleteTask}) {
+      return (
+        <ul>
+          {tasks.map((task) => (
+            <li key={task.id}>
+              <ToDoItem task={task} onChangeTodoItem={onChangeTask} onDeleteTodoItem={onDeleteTask} />
+            </li>
+          ))}
+        </ul>
+      );
+    }
+    
+    // 根
+    function App() {
+      // 使用 reducer 管理状态
+      const initialTasks = [
+        {id: 0, text: '参观卡夫卡博物馆', done: true},
+        {id: 1, text: '看木偶戏', done: false},
+        {id: 2, text: '打卡列侬墙', done: false}
+      ];
+      // reducer函数
+      let nextId = 3;
+      function tasksReducer(tasks, action) {
+        switch (action.type) {
+          case 'added': {
+            return [
+              ...tasks,
+              {
+                id: action.id,
+                text: action.text,
+                done: false,
+              },
+            ];
+          }
+          case 'changed': {
+            return tasks.map((t) => {
+              if (t.id === action.task.id) {
+                return action.task;
+              } else {
+                return t;
+              }
+            });
+          }
+          case 'deleted': {
+            return tasks.filter((t) => t.id !== action.id);
+          }
+          default: {
+            throw Error('未知 action: ' + action.type);
+          }
+        }
+      }
+      
+      const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
+
+      // 输入框值
+      function handleAddTodo(text) {
+        console.log('text',text)
+        dispatch({
+          type: 'added',
+          id: nextId++,
+          text: text,
+        });
+      }
+      // 改变待办事项
+      function handleChangeTask(task) {
+        dispatch({
+          type: 'changed',
+          task: task,
+        });
+      }
+      // 删除待办事项
+      function handleDeleteTask(taskId) {
+        dispatch({
+          type: 'deleted',
+          id: taskId,
+        });
+      }
+      
+      return(
+        <>
+          <br/>
+          <h1>布拉格的待办事项</h1>
+          <AddToDo onAddToDo={handleAddTodo} />
+          <ToDoList
+            tasks={tasks}
+            onChangeTask={handleChangeTask}
+            onDeleteTask={handleDeleteTask}
+          />
+        </>
+      );
+    }
+
+    
+    //类似vue中的el选项
+    const root = ReactDOM.createRoot(document.getElementById('app'))
+    root.render(<App/>)
+  </script>
+
+</body>
+</html>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>5.组件state和生命周期</title>
+  <title>8.组件state和生命周期</title>
 </head>
 <body>
   <div id="app"></div>
@@ -20,15 +20,17 @@
 
       2.使用方法
         函数组件: 使用是很简单的、通过执行Hook(钩子函数) useState() 即可获取到一个state状态变量、为组件添加一个状态。
-          import { useState } from 'react' 文件顶部引入钩子函数 useState
-        在使用时接受一个初始值参数、
+          import { useState } from 'react' 文件顶部引入钩子函数 useState。
+          const [state, setState] = useState(initialState)
+
+        在使用时 useState 接受一个唯一的参数是 state 变量的初始值。
           const result = useState(1)
-          解构
+          都是使用数组解构
           const [age,setAge] = useState(1)
-        每次组件渲染时都会返回一个数组、 它正好有两项。
-          第一个元素: 就是初始值也就是当前状态、它会保存组件上次渲染的值。
-          第二个元素: 是一个 setter 函数(更新函数)通常命名为 setXXX、它是用来修改state的、调用它就会修改state并触发 React 再次渲染组件。
-          它也可以接受一个回调函数、回调函数会接受上一次的state作为参数。
+        每次组件渲染时 useState 都会返回一个数组、 它总是正好有两项。
+          第一个元素 State 变量: 用于保存渲染间的数据、就是初始值也就是当前状态、它会保存组件上次渲染的值。 
+          第二个元素 State setter 函数: 是一个 setter 函数(更新函数)通常命名为 setXXX、它是用来修改state的、调用它就会更新state并触发 React 再次渲染组件。
+          它也可以接受一个回调函数(更新函数)、回调函数会接受上一次的state作为参数。
           
         跟vue类似,不要直接修改state而是使用 setter 函数来动态更新组件 state。
         同时组件可以选择把它的 state 作为 props 向下传递到它的子组件中这就形成了父子组件通信的单向数据流。
@@ -40,7 +42,7 @@
             const newX = 3
             setX(newX)或者setX(3) 这样即可触发重新渲染。
         
-          当state为对象时想要更新它、你需要创建一个新的对象(或者将其拷贝一份)、然后将 state 更新为新的对象。
+          当 state 为对象时想要更新它、你需要创建一个新的对象(或者将其拷贝一份)、然后将 state 更新为新的对象。
           总之就是不能直接修改原对象
           即:
             const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -63,8 +65,18 @@
             嵌套的对象同理。
 
             当state为数组时(JavaScript数组也是对象)、所以是一样的需要创建一个新数组（或者复制现有数组），然后用新数组来更新状态。
-            新数组包含了原始数组的所有元素 以及 一个或多个在末尾的新元素
+            新数组包含了原始数组的所有元素 以及 一个或多个在末尾的新元素。
+            
 
+            也可以传递一个更新函数、这时react会将它加入队列在下次渲染期间调用 useState 时，React 会遍历队列。
+            setState(state => {
+              // 这个状态就是上一个状态的值。
+              // 按照惯例，通常将待定状态参数命名为状态变量名称的第一个字母
+              state
+            })
+
+            在 React 中、useState 以及任何其他以“use”开头的函数都被称为 Hook。Hook 是特殊的函数，只在 React 渲染时有效、只能在组件或自定义 Hook 的最顶层调用。 你不能在条件语句、循环语句或其他嵌套函数内调用 Hook。
+            state 完全私有于声明它的组件、在 React 中，状态被认为是只读的，因此 你应该替换它而不是改变现有对象。
     </pre>
     <h3>2.组件的生命周期</h3>
     <pre>
@@ -94,17 +106,30 @@
         3.为最近的共同的父组件添加 state ，并将其与事件处理函数一起向下传递。
 
     </pre>
-    <h3>5.Reducer </h3>
+    <h1>5.组件状态跨级传递</h1>
     <pre>
+      通过 props 将信息从父组件传递到子组件。但是，如果你必须通过许多中间组件向下传递 props、或是在你应用中的许多组件需要相同的信息，传递 props 会变的十分冗长和不便。Context 允许父组件向其下层无论多深的任何组件提供信息，而无需通过 props 显式传递。
+      它是传递props的另一种方式、通过以下三个步骤来实现它。
+      1、创建 一个 context、并将其从一个文件中导出、这样你的组件才可以使用它 
+      // app.js
+      import { createContext } from 'react';
+      export const LevelContext = createContext(1);
 
-      当组件内的state状态很多时可以将组件的所有状态更新逻辑整合到一个外部函数中、这个函数叫作 reducer。
-      也就是说 Reducer 可以整合组件的状态更新逻辑、它是由useReducer 这个Hook创建的。
-      Reducer 是处理状态的另一种方式。你可以通过三个步骤将 useState 迁移到 useReducer
-        将设置状态的逻辑 修改 成 dispatch 的一个 action
-        编写 一个 reducer 函数；
-        在你的组件中 使用 reducer。
+      createContext 只需默认值这么一个参数可以传递任何类型的值。
+      
+      2、在需要数据的组件内使用刚刚创建的 context、从 React 中引入 useContext Hook 以及你刚刚创建的 context
+      import { useContext } from 'react';
+      import { LevelContext } from './LevelContext.js';
+      // 使用
+      const level = useContext(LevelContext);
 
+      
+      3、在指定数据的组件中 提供 这个 context、
+      &lt;LevelContext.Provider value={level}&gl;
+        {children}
+      &lt;/LevelContext.Provider&gl;
 
+      
     </pre>
   </div>
 
@@ -113,9 +138,10 @@
   <script src="./js/react-dom.development.js" ></script>
   <script src="./js/babel.min.js"></script>
   <script type="text/babel">
-    // React.useState(0)
+    const { useState } = React
+
     function Name(props) {
-      const [date,setDate] = React.useState(new Date())
+      const [date,setDate] = useState(new Date())
       return (
           <div>
             <h1>hello {props.name}{props.age}</h1>
@@ -128,7 +154,7 @@
       age:22
     }
     function Form() {
-      const [person, setPerson] = React.useState({
+      const [person, setPerson] = useState({
         firstName: '王',
         lastName: '语嫣',
         email: 'wyy@163.com'
@@ -192,7 +218,8 @@
     }
 
     function Accordion() {
-      const [activeIndex, setActiveIndex] = React.useState(0);
+      const [activeIndex, setActiveIndex] = useState(0);
+      
       return (
         <>
           <h2>组件状态提升</h2>
@@ -214,6 +241,51 @@
       );
     }
 
+    const places = [{
+        id: 0,
+        name: '南非开普敦的波卡普区',
+        description: '为房屋选择亮色的传统始于 20 世纪后期。',
+        imageId: 'K9HVAGH'
+      }, {
+        id: 1, 
+        name: '中国台湾省台中市彩虹村',
+        description: '1924 年，当地居民黄永福为了避免拆迁，将 1200 间房屋全部粉刷。',
+        imageId: '9EAYZrt'
+      }, {
+        id: 2, 
+        name: '墨西哥的帕丘卡宏观壁画',
+        description: '世界上最大的壁画之一，覆盖了山坡上的房屋。',
+        imageId: 'DgXHVwu'
+      }, {
+        id: 3, 
+        name: '巴西里约热内卢的塞拉龙楼梯',
+        description: '这个地标由智利出生的艺术家 Jorge Selarón 创作，以“向巴西人民致敬”。',
+        imageId: 'aeO3rpI'
+      }, {
+        id: 4, 
+        name: '意大利布拉诺',
+        description: '这些房屋按照一个可追溯到 16 世纪的特定颜色系统进行粉刷。',
+        imageId: 'kxsph5C'
+      }, {
+        id: 5, 
+        name: '摩洛哥舍夫沙万',
+        description: '关于为什么房屋被涂成蓝色，有几种理论，包括这几种颜色可以驱蚊或者它象征着天空和天堂。',
+        imageId: 'rTqKo46'
+      }, {
+        id: 6,
+        name: '韩国釜山甘川文化村',
+        description: '2009 年，该村通过粉刷房屋并举办展览和艺术装置而转变为文化中心。',
+        imageId: 'ZfQOOzf'
+      }];
+    
+    function getImageUrl(place) {
+      return (
+        'https://i.imgur.com/' +
+        place.imageId +
+        'l.jpg'
+      );
+    }
+    
     function Panel({
       title,
       children,
@@ -234,6 +306,66 @@
       );
     }
 
+    function List({ imageSize }) {
+      const listItems = places.map(place =>
+        <li key={place.id}>
+          <Place
+            place={place}
+            imageSize={imageSize}
+          />
+        </li>
+      );
+      return <ul>{listItems}</ul>;
+    }
+
+    function Place({ place, imageSize }) {
+      return (
+        <>
+          <PlaceImage
+            place={place}
+            imageSize={imageSize}
+          />
+          <p>
+            <b>{place.name}</b>
+            {': ' + place.description}
+          </p>
+        </>
+      );
+    }
+
+    function PlaceImage({ place, imageSize }) {
+      
+      return (
+        <img
+          src={getImageUrl(place)}
+          alt={place.name}
+          width={imageSize}
+          height={imageSize}
+        />
+      );
+    }
+    
+    function App1() {
+      const [isLarge, setIsLarge] = useState(false);
+      const imageSize = isLarge ? 150 : 100;
+      return (
+        <>
+          <label>
+            <input
+              type="checkbox"
+              checked={isLarge}
+              onChange={e => {
+                setIsLarge(e.target.checked);
+              }}
+            />
+            Use large images
+          </label>
+          <hr />
+          <List imageSize={imageSize} />
+        </>
+      )
+    }
+    
     function App() {
       return(
         <>
@@ -241,80 +373,16 @@
           <Form />
           <br/>
           <Accordion />
+          <br/>
+          <div>props 通过context传递</div>
+          <App1 />
         </>
       );
     }
+
     //类似vue中的el选项
     const root = ReactDOM.createRoot(document.getElementById('app'))
     root.render(<App/>)
-
-    // function UserGreeting(props) {
-    //   return <h1>Welcome back!</h1>;
-    // }
-
-    // function GuestGreeting(props) {
-    //   return <h1>Please sign up.</h1>;
-    // }
-    // function Greeting(props) {
-    //   const isLoggedIn = props.isLoggedIn;
-    //   if (isLoggedIn) {return <UserGreeting />;} 
-    //   return <GuestGreeting />;
-    // }
-
-    // function LoginButton(props) {
-    //   return (
-    //     <button onClick={props.onClick}>
-    //       Login
-    //     </button>
-    //   );
-    // }
-
-    // function LogoutButton(props) {
-    //   return (
-    //     <button onClick={props.onClick}>
-    //       Logout
-    //     </button>
-    //   );
-    // }
-    // // 类组件
-    // class LoginControl extends React.Component {
-    //   constructor(props) {
-    //     super(props);
-    //     this.handleLoginClick = this.handleLoginClick.bind(this);
-    //     this.handleLogoutClick = this.handleLogoutClick.bind(this);
-    //     this.state = {isLoggedIn: false};
-    //   }
-
-    //   handleLoginClick() {
-    //     this.setState({isLoggedIn: true});
-    //   }
-
-    //   handleLogoutClick() {
-    //     this.setState({isLoggedIn: false});
-    //   }
-
-    //   render() {
-    //     const isLoggedIn = this.state.isLoggedIn;
-    //     let button;
-    //     if (isLoggedIn) {
-    //       button = <LogoutButton onClick={this.handleLogoutClick} />;    
-    //     } else {
-    //       button = <LoginButton onClick={this.handleLoginClick} />;    
-    //     }
-    //     return (
-    //       <div>
-    //         <Greeting isLoggedIn={isLoggedIn}/>
-    //         {button}     
-    //       </div>
-    //     );
-    //   }
-    // }
-
-    // // 16
-    // ReactDOM.render(
-    //   <LoginControl />, 
-    //   document.getElementById('app')
-    // );
   </script>
 
 </body>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>9.react表单</title>
+  <title>10.react表单</title>
 </head>
 <body>
   <div id="app">
@@ -16,7 +16,7 @@
     <pre>
 
       1.概述
-      在 React 里,HTML 表单元素的工作方式和其他的 DOM 元素有些不同,这是因为表单元素通常会保持一些内部的 state。
+      和vue封装了v-model指令不同、在 React 里,HTML 表单元素的工作方式和其他的 DOM 元素有些不同,这是因为表单元素通常会保持一些内部的 state。
       例如:原生表单具有默认的 HTML 表单行为,即在用户提交表单后浏览会刷新页面。
       在 HTML 中,表单元素(如input、 textarea 和 select)通常自己维护 state,并根据用户输入进行更新。
       而在 React 中,可变状态(mutable state)通常保存在组件的 state 属性中,并且只能通过使用 setState()来更新。
@@ -29,11 +29,14 @@
       2.常见控件元素
 
       input元素-它是利用value属性绑定state值、然后通过onChange事件触发 setState()进而更新值。
-        input type="text" value={state.value} onChange={handleChange} 
-      
+        const [firstName, setFirstName] = useState('');
+        function handleFirstNameChange(e) {
+          setFirstName(e.target.value);
+        }
+        &lt; input type="text" value={firstName} onChange={handleFirstNameChange} / &gt;
 
       textarea元素-和input一样
-      textarea value={answer} onChange={handleTextareaChange}
+        &lt; textarea value={answer} onChange={handleTextareaChange} / &gt;
 
 
 
@@ -49,9 +52,9 @@
   <script src="./js/babel.min.js"></script>
   <!-- react -->
   <script type="text/babel">
-
+    const { useState } = React
     function NameForm(props) {
-      const [nameData,setNameData] = React.useState({username: ''})
+      const [nameData,setNameData] = useState({username: ''})
       function  handleChange(event) {
         setNameData({username:event.target.value})
       }
@@ -76,7 +79,7 @@
     }
 
     function EssayForm() {
-      const [msgData,setMsgData] = React.useState({title: '请撰写一篇关于你喜欢的 DOM 元素的文章.'})
+      const [msgData,setMsgData] = useState({title: '请撰写一篇关于你喜欢的 DOM 元素的文章.'})
       function handleChange(event) {
         setMsgData({title:event.target.value})
       }
@@ -101,7 +104,7 @@
     }
 
     function FlavorForm() {
-      const [like,setLike] = React.useState({value: 'coconut'})
+      const [like,setLike] = useState({value: 'coconut'})
       function handleChange(event) {
         setLike({value: event.target.value})
       }
@@ -109,6 +112,7 @@
         alert('你喜欢的风味是: ' + like)
         event.preventDefault()
       }
+
       return (
         <form onSubmit={handleSubmit}>
           <label>

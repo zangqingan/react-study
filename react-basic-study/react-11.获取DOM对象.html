@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>11.react获取DOM对象</title>
+</head>
+<body>
+  <div id="app">
+      
+  </div>
+  <hr>
+  <div>
+    <h3>1.概述</h3>
+    <pre>
+
+        有时候希望直接能操作原生DOM对象、这时就要使用 ref 引用值 。这就是react的脱围机制
+        useRef Hook 返回一个对象，该对象有一个名为 current 的属性。
+        
+        { 
+          current: 0 // 你向 useRef 传入的值
+        }
+        
+        本质上这个 hook 可以让组件记住某些信息但是又不会触发组件更新渲染、ref 在重新渲染之间由 React 保留、通过 ref.current 属性访问该 ref 的当前值。
+        常常用来存储定时器id、dom元素、其它不影响组件渲染输出的对象。
+
+        1.创建一个容器用来存储DOM对象、使用useRef() 钩子函数
+          import { useRef } from 'react';
+          const divRef = useRef(null)
+        2. 将 ref 作为 ref 属性值传递给想要获取的 DOM 节点的 JSX 标签
+        也就是在html标签或react组件上使用 ref属性等于useRef()钩子生成的对象即可。
+          &lg; div ref={divRef}&gt; &lg;/div&gt;
+          divRef.current 就是返回原生的DOM对象。        
+          
+        最初: myRef.current 是 null、关联后当 React 为这个 &lg; div&gt; 创建一个 DOM 节点时、React 会把对该节点的引用放入 myRef.current。
+
+    </pre>
+  </div>
+
+
+
+  <script src="./js/react.development.js" ></script>  
+  <script src="./js/react-dom.development.js" ></script>
+  <script src="./js/babel.min.js"></script>
+  <script type="text/babel">
+    const  { useRef } = React
+
+    function Form() {
+      const inputRef = useRef(null);
+
+      function handleClick() {
+        console.log('inputRef.current',inputRef.current)
+        inputRef.current.focus();
+      }
+
+      return (
+        <>
+          <input ref={inputRef} />
+          <button onClick={handleClick}>
+            聚焦输入框
+          </button>
+        </>
+      );
+    }
+
+    
+    function App() {
+      let ref = useRef(0);
+
+      function handleClick() {
+        ref.current = ref.current + 1;
+        alert('你点击了 ' + ref.current + ' 次!');
+      }
+
+      return (
+        <>
+          <Form />
+          <hr/>
+          <button onClick={handleClick}>
+            点我！
+          </button>
+        </>
+
+
+      );
+    }
+    const root = ReactDOM.createRoot(document.getElementById('app'))
+    root.render(<App />)
+
+  </script>
+
+</body>
+</html>
