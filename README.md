@@ -24,6 +24,7 @@ react基础语法的学习、这里我们依然不使用任何构建工具。
 // 3. js的编译器，将jsx语法编译成js语法。
 
 ```
+
 [1.react概述和基本使用](react-basic-study/react-1.react概述和基本使用.html)
 
 [2.JSX语法](react-basic-study/react-2.JSX语法.html)
@@ -57,12 +58,13 @@ react基础语法的学习、这里我们依然不使用任何构建工具。
 使用npm 手动创建 react 项目学习、先要安装3个包 react、react-dom、react-scripts(提供了webpack等功能)
 
 ```bash
+
 # 初始化项目
 $ npm init -y 
 # 安装需要依赖
 $ npm i  react react-dom react-scripts 
 # 就可以使用本项目内的依赖包打包项目。
-$ npx react-scripts bulid 
+$ npx react-scripts build 
 # 实时运行
 $ npx react-scripts start 
 # 也可以把命令写到 package.json 文件中的scripts选项里。
@@ -72,13 +74,15 @@ $ npx react-scripts start
     "build": "react-scripts build"
 
 ```
+
 设置代码格式化、在项目根目录创建 .eslintrc.json 文件并配置如下内容。
+
 ```bash
 # eslint-config-react-app 是一个由 Create React App 使用的共享 ESLint 配置包，它包含了一套预设的 React 相关的 ESLint 规则。
 $ npm install --save-dev eslint-config-react-app eslint@^8.0.0
 # eslint-plugin-react 扩展了ESLint 使其能够理解 React 的 JSX 语法
 # eslint-plugin-react-hooks 主要关注于 React Hooks 的正确使用。
-$ npm install eslint@^8.0.0 eslint-plugin-react eslint-plugin-react-hooks --save-dev
+$ npm install eslint-plugin-react eslint-plugin-react-hooks --save-dev
 ```
 ```js
 // .eslintrc.json
@@ -118,7 +122,7 @@ $ npm install eslint@^8.0.0 eslint-plugin-react eslint-plugin-react-hooks --save
 ```
 
 创建项目目录结构如下:
-```
+```js
 项目名(文件名)
 +-- dist[目录]                      // 编译后的目录，用于预览项目
 +-- public[目录]                    // 公共静态资源
@@ -134,20 +138,159 @@ $ npm install eslint@^8.0.0 eslint-plugin-react eslint-plugin-react-hooks --save
 
 ```
 
-集成typescript、在项目中添加 @types/react 和 @types/react-dom 即可获得完整的 React Web 支持。
-```bash
-$ npm install @types/react @types/react-dom
-```
-然后在 tsconfig.json 中设置以下编译器选项:
+## 3.1 react 路由学习
+React 路由通常使用 react-router 库来实现，它是一个功能强大的库，用于在 React 应用程序中实现客户端路由。在浏览器环境中实现路由的包是react-router-dom。
+
+安装路由: `$ npm install react-router-dom`
+
+
+
+在react-router-dom中有四种配置路由的方式，分别是BrowseRouter，MemeoryRouter、StaticRouter、HashRouter，一般我们基本使用的都是 BrowseRouter、HashRouter。
+
+比如我们使用 BrowseRouter、如下。
+
 ```js
+// 创建路由并导出
+import { createBrowserRouter } from 'react-router-dom';
+
+const router = createBrowserRouter([
+  {
+    path: '/',//路由的路径，可以是字符串或者正则表达式。
+    element: <div>首页</div>// element: 路由渲染的组件。Router5.x 中使用component属性，6.x不支持该属性。
+  },
+  {
+    path: '/login',
+    element: <div>登录页</div>
+  }
+])
+
+// 导出
+export default router
+
+// 入口文件
+// 引入严格模式
+import { StrictMode } from 'react';
+// 引入 createRoot - react18之后拆分了
+import { createRoot } from 'react-dom/client'
+// 引入路由提供者用于绑定路由配置 
+import { RouterProvider } from 'react-router-dom'
+// 引入路由配置
+import router from'./router'
+
+// 获取根元素
+const root = createRoot(document.getElementById('root'))
+// 挂载App渲染根元素下
+root.render(
+  <StrictMode>
+    <RouterProvider router={ router } />
+  </StrictMode>
+)
 
 ```
+
+### 1、路由导航
+路由的跳转有两种方式，一种是编程式导航、一种是声明式导航。
+
+1. 声明式导航
+```js
+
+说明：声明式导航是指在模板中通过<Link/>组件的to属性描述要跳转到哪里、最终是渲染成a标签。
+语法：
+import { Link } from "react-router-dom"
+<Link to=''/article''>跳转</Link>
+
+
+```
+
+2. 编程式导航
+```js
+说明：编程式导航是指通过‘useNavigate’钩子得到导航方法，然后通过调用方法以命令的形式进行路由跳转
+
+语法：
+const navigate = uaeNavigate() 
+navigate('/article')
+
+```
+### 2、路由传参
+和vue一样的、不过react中不是使用组件就是使用hook代替。
+查询字符串传参使用 useSearchParams() 钩子获取
+动态路由使用 useParams() 钩子获取
+
+
+```js
+searchParams传参，传参依然是通过查询字符串传递，关键在于如何获取传递的参数
+<div>   
+   <button onClick={()=>navigate('/article?id=1001&name=jack哈啊哈')}>传参</button>
+</div>   
+import { useSearchParams  } from 'react-router-dom'
+// 获取路由参数
+const [searchParams] = useSearchParams()
+const id = searchParams.get('id')
+const name = searchParams.get('name')
+动态路由传参
+  {
+    path : '/category/:id/:name', //添加参数占位符
+    element : <Category />
+  }
+import { useParams  } from 'react-router-dom'
+// 获取路由参数
+const params = useParams()
+const id = params.id
+const name = params.name
+
+
+```
+
+### 3、嵌套路由
+也是通过children属性配置路由嵌套关系、使用&lg;Outlet/&gt;组件配置二级路由渲染位置(也就是路由出口)
+
+
+```js
+const router = createBrowserRouter([
+    {
+        path : '/',
+        element : <Layout></Layout>,
+        children :[{
+             index:true, //加index:true、默认二级路由
+            path : '/board',
+            element : <Board></Board>
+        },
+        {
+            path : '/about',
+            element : <About></About>
+        }]
+    },
+    {
+        path : '/login',
+        element : <Login></Login>
+    },
+    {
+        path : '/article/:id/:name',
+        element : <Article></Article>
+    }
+])
+import { Link,Outlet } from "react-router-dom"
+<Link to='/board'> 面板</Link>
+<Link to='/about'> 关于</Link>
+<h3>下面是嵌套路由出口</h3>
+<Outlet />
+
+```
+
 
 
 # 四、react-createApp-study
 项目实战
 使用 create-react-app 工具、用于创建react的单页面应用。
 
+集成typescript、在项目中添加 @types/react 和 @types/react-dom 即可获得完整的 React Web 支持。
+
+```js
+$ npm install @types/react @types/react-dom
+
+// 然后在 tsconfig.json 中设置以下编译器选项:
+
+```
 # 五、react-vite-study
 使用vite 
 

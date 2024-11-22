@@ -11,10 +11,10 @@ export default function Count() {
         setCount((preCount) => preCount + 1 )
     }
     return (
-        <div>
-            <div ref={showRef}>{count}</div>
-            <button onClick={remove}>-</button>
-            <button onClick={add}>+</button>
-        </div>
+      <div>
+        <div ref={ showRef }>{count}</div>
+        <button onClick={ remove }>-</button>
+        <button onClick={ add }>+</button>
+      </div>
     )
 }

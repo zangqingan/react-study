@@ -27,7 +27,7 @@ import { formatDate } from '../utils/index'
 function Comment(props) {
     return (
       <div className="Comment">
-        <UserInfo user={props.author}/>
+        <UserInfo user={ props.author }/>
         <div className="Comment-text">
           {props.text}
         </div>
