@@ -61,6 +61,7 @@ react基础语法的学习、这里我们依然不使用任何构建工具。
 [14.Hooks](react-basic-study/react-14.Hooks.html)
 
 # 三、react-manual-study
+使用npm手动创建react项目进行学习、包括react基础知识的运用、redux状态管理、客户端路由学习等。
 
 ## 3.1 基础配置
 

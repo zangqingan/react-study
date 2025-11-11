@@ -1,42 +1,47 @@
 // 这里封装路由导出即可
 // 创建浏览器路由器
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter } from "react-router-dom";
 
-import App from '../views/App'
-import Login from '../views/login'
-import Article from '../views/article'
-import Category from '../views/category'
-import Board from '../views/board'
-import About from '../views/about'
+import App from "../views/App";
+import Login from "../views/login";
+import Article from "../views/article";
+import Category from "../views/category";
+import Board from "../views/board";
+import About from "../views/about";
+import Task from "../views/taskList";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <App name="HangSan" />,
-    children :[
+    children: [
       {
-        path : '/board',
-        element : <Board />
+        path: "/board",
+        element: <Board />,
       },
       {
-        path : '/about',
-        element : <About />
-      }
-    ]
+        path: "/about",
+        element: <About />,
+      },
+      {
+        path: "/task",
+        element: <Task />,
+      },
+    ],
   },
   {
-    path: '/login',
-    element: <Login />
+    path: "/login",
+    element: <Login />,
   },
   {
-    path: '/article',
-    element: <Article />
+    path: "/article",
+    element: <Article />,
   },
   {
-    path : '/category/:id/:name', //添加参数占位符
-    element : <Category />
-  }
-])
+    path: "/category/:id/:name", //添加参数占位符
+    element: <Category />,
+  },
+]);
 
 // 导出
-export default router
+export default router;
