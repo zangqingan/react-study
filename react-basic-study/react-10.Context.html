@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>10.Context</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <hr />
+    <div>
+      <h3>1.Context</h3>
+      <pre>
+        1.概述
+        在react中通过 props 将信息从父组件传递到子组件、如果你必须通过许多中间组件向下传递 props，或是在你应用中的许多组件需要相同的信息，传递 props 会变的十分冗长和不便（props逐级透传）。
+        Context 提供了一种在组件之间共享值的方式允许父组件向其下层无论多深的任何组件提供信息，而不必显式地通过 props 传递。
+        它通常用于在组件树中传递全局状态，例如用户认证信息、主题设置等。
+
+        2.实现
+        通过以下三个步骤来实现：
+      
+          1.创建 一个 context并将其导出。
+          2.在需要数据的组件内，使用useContext Hook 和刚刚创建的 context。
+          3.在指定数据的组件中用 context provider 包裹起来，提供这个 context。
+
+    </pre
+      >
+    </div>
+
+    <!-- js -->
+    <script src="./js/react.development.js"></script>
+    <script src="./js/react-dom.development.js"></script>
+    <script src="./js/babel.min.js"></script>
+    <!-- react -->
+    <script type="text/babel">
+      const { useState, useContext, createContext } = React;
+      // 创建一个 context,接受一个参数-默认值
+      const MyContext = createContext(0);
+
+      function Section({ children }) {
+        const level = useContext(MyContext);
+        return (
+          <section className="section">
+            <MyContext.Provider value={level + 1}>
+              {children}
+            </MyContext.Provider>
+          </section>
+        );
+      }
+
+      function Heading({ children }) {
+        const level = useContext(MyContext);
+        switch (level) {
+          case 1:
+            return <h1>{children}</h1>;
+          case 2:
+            return <h2>{children}</h2>;
+          case 3:
+            return <h3>{children}</h3>;
+          case 4:
+            return <h4>{children}</h4>;
+          case 5:
+            return <h5>{children}</h5>;
+          case 6:
+            return <h6>{children}</h6>;
+          default:
+            throw Error("未知的 level：" + level);
+        }
+      }
+      function App() {
+        return (
+          <Section>
+            <Heading>主标题</Heading>
+            <Section>
+              <Heading>副标题</Heading>
+              <Heading>副标题</Heading>
+              <Heading>副标题</Heading>
+              <Section>
+                <Heading>子标题</Heading>
+                <Heading>子标题</Heading>
+                <Heading>子标题</Heading>
+                <Section>
+                  <Heading>子子标题</Heading>
+                  <Heading>子子标题</Heading>
+                  <Heading>子子标题</Heading>
+                </Section>
+              </Section>
+            </Section>
+          </Section>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById("app"));
+      root.render(<App />);
+    </script>
+  </body>
+</html>

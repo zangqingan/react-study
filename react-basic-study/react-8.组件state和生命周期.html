@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>8.组件state和生命周期</title>
-</head>
-<body>
-  <div id="app"></div>
-  <hr>
-  <div>
-    <h3>1.组件state(组件状态)</h3>
-    <pre>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>8.组件state和生命周期</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <hr />
+    <div>
+      <h3>1.组件state(组件状态)</h3>
+      <pre>
+        类似vue中的双向数据绑定,状态改变了页面自动更新。
 
       1.概述
         State 与 props 类似,但是 state 是私有的,并且完全受控于当前组件。
-        state 中可以保存任意类型的 JavaScript 值包括对象。
+        state 中可以保存任意类型的 JavaScript 值包括对象。在一个组件中可以拥有任意多种类型的 state 变量。
         简单说使用它就可以实现状态的改变页面同步刷新。
 
       2.使用方法
@@ -32,7 +33,7 @@
           第二个元素 State setter 函数: 是一个 setter 函数(更新函数)通常命名为 setXXX、它是用来修改state的、调用它就会更新state并触发 React 再次渲染组件。
           它也可以接受一个回调函数(更新函数)、回调函数会接受上一次的state作为参数。
           
-        跟vue类似,不要直接修改state而是使用 setter 函数来动态更新组件 state。
+        跟vue类似state也是单项数据流,不要直接修改state而是使用 setter 函数来动态更新组件 state。
         同时组件可以选择把它的 state 作为 props 向下传递到它的子组件中这就形成了父子组件通信的单向数据流。
 
         3.更新state
@@ -64,22 +65,24 @@
             });
             嵌套的对象同理。
 
-            当state为数组时(JavaScript数组也是对象)、所以是一样的需要创建一个新数组（或者复制现有数组），然后用新数组来更新状态。
+            当state为数组时(JavaScript数组也是对象)、所以是一样的需要创建一个新数组（或者复制现有数组）、然后用新数组来更新状态。
             新数组包含了原始数组的所有元素 以及 一个或多个在末尾的新元素。
             
 
-            也可以传递一个更新函数、这时react会将它加入队列在下次渲染期间调用 useState 时，React 会遍历队列。
+            也可以传递一个更新函数、这时react会将它加入队列在下次渲染期间调用 useState 时、React 会遍历队列。
             setState(state => {
               // 这个状态就是上一个状态的值。
-              // 按照惯例，通常将待定状态参数命名为状态变量名称的第一个字母
+              // 按照惯例、通常将待定状态参数命名为状态变量名称的第一个字母
               state
             })
 
-            在 React 中、useState 以及任何其他以“use”开头的函数都被称为 Hook。Hook 是特殊的函数，只在 React 渲染时有效、只能在组件或自定义 Hook 的最顶层调用。 你不能在条件语句、循环语句或其他嵌套函数内调用 Hook。
-            state 完全私有于声明它的组件、在 React 中，状态被认为是只读的，因此 你应该替换它而不是改变现有对象。
-    </pre>
-    <h3>2.组件的生命周期</h3>
-    <pre>
+            在 React 中、useState 以及任何其他以“use”开头的函数都被称为 Hook。Hook 是特殊的函数、只在 React 渲染时有效、只能在组件或自定义 Hook 的最顶层调用。 
+            你不能在条件语句、循环语句或其他嵌套函数内调用 Hook。
+            state 完全私有于声明它的组件、在 React 中、状态被认为是只读的、因此 你应该替换它而不是改变现有对象。
+    </pre
+      >
+      <h3>2.组件的生命周期</h3>
+      <pre>
       组件第一次被渲染到 DOM 中的时候,这在 React 中被称为“挂载(mount)”。
       当 DOM 中 组件被删除的时候,这在 React 中被称为“卸载(unmount)”。
       这时,当组件挂载或卸载时就可以执行一些特点方法。跟vue的生命周期钩子类似本质上就是一个函数API,这些方法也叫做“生命周期方法”。
@@ -87,28 +90,32 @@
       componentWillUnmount() {},在此处完成组件的卸载和数据的销毁。
       这个相当于vue中的beforeDestory、清除你在组件中所有的setTimeout,setInterval、移除所有组建中的监听 removeEventListener。
 
-    </pre>
-    <h3>3.组件的渲染</h3>
-    <pre>
+    </pre
+      >
+      <h3>3.组件的渲染</h3>
+      <pre>
 
       react 的组件都是通过react 进行渲染的、
       组件第一次执行(调用render函数时)、
       组件状态state改变都会触发渲染(执行setter函数更新状态后)
-    </pre>
-    <h3>4.组件状态提升</h3>
-    <pre>
+    </pre
+      >
+      <h3>4.组件状态提升</h3>
+      <pre>
 
-      当希望两个组件的状态始终同步更改、可以将相关 state 从这两个组件上移除，并把 state 放到它们最近的公共父级组件上，
+      当希望两个组件的状态始终同步更改、可以将相关 state 从这两个组件上移除、并把 state 放到它们最近的公共父级组件上、
       然后通过 props 将 state 传递给这两个子组件。这被称为组件的“状态提升”。
       需要分 3 步将状态“提升”到他们的父组件中。
         1.从子组件中 移除 state 。
         2.从父组件 传递 硬编码数据、即通过props传递原来的state状态变量名。
-        3.为最近的共同的父组件添加 state ，并将其与事件处理函数一起向下传递。
+        3.为最近的共同的父组件添加 state 、并将其与事件处理函数一起向下传递。
 
-    </pre>
-    <h1>5.组件状态跨级传递</h1>
-    <pre>
-      通过 props 将信息从父组件传递到子组件。但是，如果你必须通过许多中间组件向下传递 props、或是在你应用中的许多组件需要相同的信息，传递 props 会变的十分冗长和不便。Context 允许父组件向其下层无论多深的任何组件提供信息，而无需通过 props 显式传递。
+    </pre
+      >
+      <h1>5.组件状态跨级传递</h1>
+      <pre>
+      通过 props 将信息从父组件传递到子组件。但是、如果你必须通过许多中间组件向下传递 props、或是在你应用中的许多组件需要相同的信息、传递 props 会变的十分冗长和不便。
+      Context 允许父组件向其下层无论多深的任何组件提供信息、而无需通过 props 显式传递。
       它是传递props的另一种方式、通过以下三个步骤来实现它。
       1、创建 一个 context、并将其从一个文件中导出、这样你的组件才可以使用它 
       // app.js
@@ -130,260 +137,253 @@
       &lt;/LevelContext.Provider&gl;
 
       
-    </pre>
-  </div>
+    </pre
+      >
+    </div>
 
-  <!-- js -->
-  <script src="./js/react.development.js" ></script>  
-  <script src="./js/react-dom.development.js" ></script>
-  <script src="./js/babel.min.js"></script>
-  <script type="text/babel">
-    const { useState } = React
+    <!-- js -->
+    <script src="./js/react.development.js"></script>
+    <script src="./js/react-dom.development.js"></script>
+    <script src="./js/babel.min.js"></script>
+    <script type="text/babel">
+      const { useState } = React;
 
-    function Name(props) {
-      const [date,setDate] = useState(new Date())
-      return (
+      function Name(props) {
+        const [date, setDate] = useState(new Date());
+        return (
           <div>
-            <h1>hello {props.name}{props.age}</h1>
+            <h1>
+              hello {props.name}
+              {props.age}
+            </h1>
             <h2>It is {date.toLocaleTimeString()}</h2>
           </div>
-        )
-    }
-    const user = {
-      name:'lisi',
-      age:22
-    }
-    function Form() {
-      const [person, setPerson] = useState({
-        firstName: '王',
-        lastName: '语嫣',
-        email: 'wyy@163.com'
-      });
-
-      function handleFirstNameChange(e) {
-        // 这样修改是不对的
-        // person.firstName = e.target.value;
-        setPerson({
-          ...person,
-          firstName: e.target.value
+        );
+      }
+      const user = {
+        name: "lisi",
+        age: 22,
+      };
+      function Form() {
+        const [person, setPerson] = useState({
+          firstName: "王",
+          lastName: "语嫣",
+          email: "wyy@163.com",
         });
+
+        function handleFirstNameChange(e) {
+          // 这样修改是不对的
+          // person.firstName = e.target.value;
+          setPerson({
+            ...person,
+            firstName: e.target.value,
+          });
+        }
+
+        function handleLastNameChange(e) {
+          // person.lastName = e.target.value;
+          setPerson({
+            ...person,
+            lastName: e.target.value,
+          });
+        }
+
+        function handleEmailChange(e) {
+          // person.email = e.target.value;
+          setPerson({
+            ...person,
+            email: e.target.value,
+          });
+        }
+
+        return (
+          <>
+            <label>
+              First name:
+              <input
+                value={person.firstName}
+                onChange={handleFirstNameChange}
+              />
+            </label>
+            <label>
+              Last name:
+              <input value={person.lastName} onChange={handleLastNameChange} />
+            </label>
+            <label>
+              Email:
+              <input value={person.email} onChange={handleEmailChange} />
+            </label>
+            <p>
+              {person.firstName} {person.lastName} ({person.email})
+            </p>
+          </>
+        );
       }
 
-      function handleLastNameChange(e) {
-        // person.lastName = e.target.value;
-        setPerson({
-          ...person,
-          lastName: e.target.value
-        });
+      function Accordion() {
+        const [activeIndex, setActiveIndex] = useState(0);
+
+        return (
+          <>
+            <h2>组件状态提升</h2>
+            <Panel
+              title="关于"
+              isActive={activeIndex === 0}
+              onShow={() => setActiveIndex(0)}
+            >
+              阿拉木图人口约200万、是哈萨克斯坦最大的城市。它在 1929 年到 1997
+              年间都是首都。
+            </Panel>
+            <Panel
+              title="词源"
+              isActive={activeIndex === 1}
+              onShow={() => setActiveIndex(1)}
+            >
+              这个名字来自于 <span lang="kk-KZ">алма</span>
+              、哈萨克语中“苹果”的意思、经常被翻译成“苹果之乡”。事实上、阿拉木图的周边地区被认为是苹果的发源地、
+              <i lang="la">Malus sieversii</i> 被认为是现今苹果的祖先。
+            </Panel>
+          </>
+        );
       }
 
-      function handleEmailChange(e) {
-        // person.email = e.target.value;
-        setPerson({
-          ...person,
-          email: e.target.value
-        });
+      const places = [
+        {
+          id: 0,
+          name: "南非开普敦的波卡普区",
+          description: "为房屋选择亮色的传统始于 20 世纪后期。",
+          imageId: "K9HVAGH",
+        },
+        {
+          id: 1,
+          name: "中国台湾省台中市彩虹村",
+          description:
+            "1924 年、当地居民黄永福为了避免拆迁、将 1200 间房屋全部粉刷。",
+          imageId: "9EAYZrt",
+        },
+        {
+          id: 2,
+          name: "墨西哥的帕丘卡宏观壁画",
+          description: "世界上最大的壁画之一、覆盖了山坡上的房屋。",
+          imageId: "DgXHVwu",
+        },
+        {
+          id: 3,
+          name: "巴西里约热内卢的塞拉龙楼梯",
+          description:
+            "这个地标由智利出生的艺术家 Jorge Selarón 创作、以“向巴西人民致敬”。",
+          imageId: "aeO3rpI",
+        },
+        {
+          id: 4,
+          name: "意大利布拉诺",
+          description:
+            "这些房屋按照一个可追溯到 16 世纪的特定颜色系统进行粉刷。",
+          imageId: "kxsph5C",
+        },
+        {
+          id: 5,
+          name: "摩洛哥舍夫沙万",
+          description:
+            "关于为什么房屋被涂成蓝色、有几种理论、包括这几种颜色可以驱蚊或者它象征着天空和天堂。",
+          imageId: "rTqKo46",
+        },
+        {
+          id: 6,
+          name: "韩国釜山甘川文化村",
+          description:
+            "2009 年、该村通过粉刷房屋并举办展览和艺术装置而转变为文化中心。",
+          imageId: "ZfQOOzf",
+        },
+      ];
+
+      function getImageUrl(place) {
+        return "https://i.imgur.com/" + place.imageId + "l.jpg";
       }
 
-      return (
-        <>
-          <label>
-            First name:
-            <input
-              value={person.firstName}
-              onChange={handleFirstNameChange}
-            />
-          </label>
-          <label>
-            Last name:
-            <input
-              value={person.lastName}
-              onChange={handleLastNameChange}
-            />
-          </label>
-          <label>
-            Email:
-            <input
-              value={person.email}
-              onChange={handleEmailChange}
-            />
-          </label>
-          <p>
-            {person.firstName}{' '}
-            {person.lastName}{' '}
-            ({person.email})
-          </p>
-        </>
-      );
-    }
+      function Panel({ title, children, isActive, onShow }) {
+        return (
+          <section className="panel">
+            <h3>{title}</h3>
+            {isActive ? (
+              <p>{children}</p>
+            ) : (
+              <button onClick={onShow}>显示</button>
+            )}
+          </section>
+        );
+      }
 
-    function Accordion() {
-      const [activeIndex, setActiveIndex] = useState(0);
-      
-      return (
-        <>
-          <h2>组件状态提升</h2>
-          <Panel
-            title="关于"
-            isActive={activeIndex === 0}
-            onShow={() => setActiveIndex(0)}
-          >
-            阿拉木图人口约200万，是哈萨克斯坦最大的城市。它在 1929 年到 1997 年间都是首都。
-          </Panel>
-          <Panel
-            title="词源"
-            isActive={activeIndex === 1}
-            onShow={() => setActiveIndex(1)}
-          >
-            这个名字来自于 <span lang="kk-KZ">алма</span>，哈萨克语中“苹果”的意思，经常被翻译成“苹果之乡”。事实上，阿拉木图的周边地区被认为是苹果的发源地，<i lang="la">Malus sieversii</i> 被认为是现今苹果的祖先。
-          </Panel>
-        </>
-      );
-    }
+      function List({ imageSize }) {
+        const listItems = places.map((place) => (
+          <li key={place.id}>
+            <Place place={place} imageSize={imageSize} />
+          </li>
+        ));
+        return <ul>{listItems}</ul>;
+      }
 
-    const places = [{
-        id: 0,
-        name: '南非开普敦的波卡普区',
-        description: '为房屋选择亮色的传统始于 20 世纪后期。',
-        imageId: 'K9HVAGH'
-      }, {
-        id: 1, 
-        name: '中国台湾省台中市彩虹村',
-        description: '1924 年，当地居民黄永福为了避免拆迁，将 1200 间房屋全部粉刷。',
-        imageId: '9EAYZrt'
-      }, {
-        id: 2, 
-        name: '墨西哥的帕丘卡宏观壁画',
-        description: '世界上最大的壁画之一，覆盖了山坡上的房屋。',
-        imageId: 'DgXHVwu'
-      }, {
-        id: 3, 
-        name: '巴西里约热内卢的塞拉龙楼梯',
-        description: '这个地标由智利出生的艺术家 Jorge Selarón 创作，以“向巴西人民致敬”。',
-        imageId: 'aeO3rpI'
-      }, {
-        id: 4, 
-        name: '意大利布拉诺',
-        description: '这些房屋按照一个可追溯到 16 世纪的特定颜色系统进行粉刷。',
-        imageId: 'kxsph5C'
-      }, {
-        id: 5, 
-        name: '摩洛哥舍夫沙万',
-        description: '关于为什么房屋被涂成蓝色，有几种理论，包括这几种颜色可以驱蚊或者它象征着天空和天堂。',
-        imageId: 'rTqKo46'
-      }, {
-        id: 6,
-        name: '韩国釜山甘川文化村',
-        description: '2009 年，该村通过粉刷房屋并举办展览和艺术装置而转变为文化中心。',
-        imageId: 'ZfQOOzf'
-      }];
-    
-    function getImageUrl(place) {
-      return (
-        'https://i.imgur.com/' +
-        place.imageId +
-        'l.jpg'
-      );
-    }
-    
-    function Panel({
-      title,
-      children,
-      isActive,
-      onShow
-    }) {
-      return (
-        <section className="panel">
-          <h3>{title}</h3>
-          {isActive ? (
-            <p>{children}</p>
-          ) : (
-            <button onClick={onShow}>
-              显示
-            </button>
-          )}
-        </section>
-      );
-    }
+      function Place({ place, imageSize }) {
+        return (
+          <>
+            <PlaceImage place={place} imageSize={imageSize} />
+            <p>
+              <b>{place.name}</b>
+              {": " + place.description}
+            </p>
+          </>
+        );
+      }
 
-    function List({ imageSize }) {
-      const listItems = places.map(place =>
-        <li key={place.id}>
-          <Place
-            place={place}
-            imageSize={imageSize}
+      function PlaceImage({ place, imageSize }) {
+        return (
+          <img
+            src={getImageUrl(place)}
+            alt={place.name}
+            width={imageSize}
+            height={imageSize}
           />
-        </li>
-      );
-      return <ul>{listItems}</ul>;
-    }
+        );
+      }
 
-    function Place({ place, imageSize }) {
-      return (
-        <>
-          <PlaceImage
-            place={place}
-            imageSize={imageSize}
-          />
-          <p>
-            <b>{place.name}</b>
-            {': ' + place.description}
-          </p>
-        </>
-      );
-    }
+      function App1() {
+        const [isLarge, setIsLarge] = useState(false);
+        const imageSize = isLarge ? 150 : 100;
+        return (
+          <>
+            <label>
+              <input
+                type="checkbox"
+                checked={isLarge}
+                onChange={(e) => {
+                  setIsLarge(e.target.checked);
+                }}
+              />
+              Use large images
+            </label>
+            <hr />
+            <List imageSize={imageSize} />
+          </>
+        );
+      }
 
-    function PlaceImage({ place, imageSize }) {
-      
-      return (
-        <img
-          src={getImageUrl(place)}
-          alt={place.name}
-          width={imageSize}
-          height={imageSize}
-        />
-      );
-    }
-    
-    function App1() {
-      const [isLarge, setIsLarge] = useState(false);
-      const imageSize = isLarge ? 150 : 100;
-      return (
-        <>
-          <label>
-            <input
-              type="checkbox"
-              checked={isLarge}
-              onChange={e => {
-                setIsLarge(e.target.checked);
-              }}
-            />
-            Use large images
-          </label>
-          <hr />
-          <List imageSize={imageSize} />
-        </>
-      )
-    }
-    
-    function App() {
-      return(
-        <>
-          <Name name={user.name} age={user.age}/>,
-          <Form />
-          <br/>
-          <Accordion />
-          <br/>
-          <div>props 通过context传递</div>
-          <App1 />
-        </>
-      );
-    }
+      function App() {
+        return (
+          <>
+            <Name name={user.name} age={user.age} />,
+            <Form />
+            <br />
+            <Accordion />
+            <br />
+            <div>props 通过context传递</div>
+            <App1 />
+          </>
+        );
+      }
 
-    //类似vue中的el选项
-    const root = ReactDOM.createRoot(document.getElementById('app'))
-    root.render(<App/>)
-  </script>
-
-</body>
+      //类似vue中的el选项
+      const root = ReactDOM.createRoot(document.getElementById("app"));
+      root.render(<App />);
+    </script>
+  </body>
 </html>

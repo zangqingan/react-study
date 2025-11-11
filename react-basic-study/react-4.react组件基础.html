@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width、 initial-scale=1.0">
-  <title>4.react组件基础</title>
-</head>
-<body>
-  <div id="root"></div>
-  <hr>  
-  <div>
-    <h3>1.react组件</h3>
-    <pre>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width、 initial-scale=1.0" />
+    <title>4.react组件基础</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <hr />
+    <div>
+      <h3>1.react组件</h3>
+      <pre>
 
       1.概述
         组件允许你将 UI 拆分为一个个独立可复用的代码片段、并对每个片段进行独立构思。
@@ -48,28 +48,29 @@
             &lt; 自定义react组件名(首字母要大写) /&gt; 。
           &lt;/div&gt;  
 
-    </pre>
-    <img src="./images/组件基础.png" alt=""><br>
-    <h3>2.组件通信</h3>
-    <pre>
+    </pre
+      >
+      <img src="./images/组件基础.png" alt="" /><br />
+      <h3>2.组件通信</h3>
+      <pre>
 
         1.props概述
           当 React 元素为用户自定义的组件时、它会将 JSX 所接收的属性(attributes)以及子组件(children)都放到一个对象里传递给组件、这个对象被称之为 “props”。
           也就是react函数组件都会接受一个唯一的名为 props 的参数对象、它是组件之间通信的基础。它可以传递任何 JavaScript 的值包括对象、数组、函数、甚至是 JSX!
-          它是像HTML属性一样在使用react组件时传递给jsx。
+          它是像HTML属性一样在使用react组件时传递给组件。
           这时自定义组件内部就可以像使用变量一样通过 props.属性名 访问接收的参数、要传入参数时使用 {} 即可。
         如: &lt; 自定义react组件名 name="David" age=23 gender={变量名} /&gt;
           组件内部: 
           function 自定义react组件名(props) {
             {props.name}、{props.age}、{props.gender} 就可以读取到传入的参数值。
           }
-          等价的解构使用: 
+          一般直接使用等价的解构: 
           function 自定义react组件名({name,age,gender}) {
             {name},{age},{gender} 就可以直接读取到对应的参数值。
           }
         注意:props的命名从组件自身的角度命名 props、而不是依赖于调用组件的上下文命名。
         组件无论是使用函数声明还是通过 class 声明、都决不能修改自身的 props而是只是读取。跟vue类似不能直接在子组件内部手动修改。
-        即单向数据流所有 React 组件都必须像纯函数一样保护它们的 props 不被更改。 要想修改值要使用'state'状态来改变。
+        即单向数据流：所有 React 组件都必须像纯函数一样保护它们的 props 不被更改。 要想修改值要使用'state'状态来改变。
 
         注意: 当传递一个组件时、这时父组件将在名为 children 的 prop 中接收到该内容。
         使用时:
@@ -86,15 +87,17 @@
         }
 
         2. props默认值
-          在没有指定值或者值等于undefined的情况下给 prop 一个默认值，你可以通过在参数后面写 = 和默认值来进行解构。
+          在没有指定值或者值等于undefined的情况下给可以给 prop 一个默认值，你可以通过在参数后面写 = 和默认值来进行解构。
+          
           function Avatar({ person, size = 100 }) {
             // ...
           }
         
 
-    </pre>
-    <h3>3.组件的复用和组合</h3>
-    <pre>
+    </pre
+      >
+      <h3>3.组件的复用和组合</h3>
+      <pre>
       组件在定义之后是可以重复使用也就是复用的、同时在定义组件时也可以引用或者输出其他组件也就是组件的嵌套组合。
       所以一般组件是抽离单独放到一个文件里的、也就是一个组件就是一个js文件、这时通过es6的模块语法即可实现组件的导入导出进而实现相互使用。
       要注意es6模块语法的使用规范即可。
@@ -103,77 +106,52 @@
 
       注意: 当使用构建工具后react也是有一个根组件、然后其它组件都是它的后代组件。
 
-    </pre>
-    <h3>4.组件树(UI树)</h3>
-    <pre>
+    </pre
+      >
+      <h3>4.组件树(UI树)</h3>
+      <pre>
 
       当 React 应用程序逐渐成形时、许多组件会出现嵌套。React 是使用树形关系建模以展示组件和模块之间的关系。
       React 渲染树是组件之间父子关系的表示、一个组件就是一个节点、其中位于树顶部、靠近根组件的组件被视为顶层组件、没有子组件的组件被称为叶子组件。
 
       对 JavaScript 模块之间的关系进行建模是了解应用程序的另一种有用方式。我们将其称为模块依赖树。
       这是因为一个组件抽离后就是一个js文件模块、每一个js文件模块就是一个节点。
-    </pre>
-    <h3>5.组件跨级通信</h3>
-    <pre>
-
-      使用props在深层组件通信时就会变的十分冗长和不便。这时使用Context 允许父组件向其下层无论多深的任何组件提供信息，而无需通过 props 显式传递。
-      通过以下三个步骤来实现它：
-        1.创建 一个 context。
-        LevelContext.js
-          import { createContext } from 'react';
-          export const LevelContext = createContext(1);它需要一个默认值、可以时任意类型的JavaScript值。
-
-        2.在需要数据的组件内使用刚刚创建的 context。
-        Heading.js
-          import { useContext } from 'react';
-          引入
-          import { LevelContext } from './LevelContext.js';
-          使用
-          const level = useContext(LevelContext); 访问上层最近的 LevelContext 提供的值
-        useContext也是一个 Hook、和useState 以及 useReducer一样只能在 React 组件中调用。
-
-        3.在指定数据的组件中提供这个 context。
-        import { LevelContext } from './LevelContext.js';
-          用 context provider 包裹起来就是一个组件写法包裹
-          LevelContext.Provider value={level}这里是要提供的值 >
-
-
-
-    </pre>
-
-  </div>
-
-  <script src="./js/react.development.js" ></script>  
-  <script src="./js/react-dom.development.js" ></script>
-  <script src="./js/babel.min.js"></script>
-  <script type="text/babel">
-  // 定义一个处理本地日期格式的函数
-  function formatDate(date) {
-    return date.toLocaleDateString();
-  }
-  // avatar组件、孙孙子组件
-  function Avatar(props){
-     return(
-      <img className="Avatar" src={props.user.avatarUrl} alt={props.user.name} />
-    )
-  }
-  // UserInfo组件、孙子组件
-  function UserInfo(props){
-    return (
-    <div className="UserInfo">
-      <Avatar user={props.user} />      
-      <div className="UserInfo-name">
-        {props.user.name}      
-      </div>    
+    </pre
+      >
     </div>
-    )
-  }
-  // Comment组件、子组件 
-  function Comment(props) {
-    return (
-      <div className="Comment">
-        {
-          /*
+
+    <script src="./js/react.development.js"></script>
+    <script src="./js/react-dom.development.js"></script>
+    <script src="./js/babel.min.js"></script>
+    <script type="text/babel">
+      // 定义一个处理本地日期格式的函数
+      function formatDate(date) {
+        return date.toLocaleDateString();
+      }
+      // avatar组件、孙孙子组件
+      function Avatar(props) {
+        return (
+          <img
+            className="Avatar"
+            src={props.user.avatarUrl}
+            alt={props.user.name}
+          />
+        );
+      }
+      // UserInfo组件、孙子组件
+      function UserInfo(props) {
+        return (
+          <div className="UserInfo">
+            <Avatar user={props.user} />
+            <div className="UserInfo-name">{props.user.name}</div>
+          </div>
+        );
+      }
+      // Comment组件、子组件
+      function Comment(props) {
+        return (
+          <div className="Comment">
+            {/*
             再把整个UserInfo抽离成一个组件 
             <div className="UserInfo">
               {
@@ -189,77 +167,73 @@
                 {props.author.name}
               </div>
             </div>
-          */
-        }
-        <UserInfo user={props.author}/>
-        <div className="Comment-text">
-          {props.text}
-        </div>
-        <div className="Comment-date">
-          {/* 花括号相当于vue的插值表达式、所以可以运行js函数*/}
-          {formatDate(props.date)}
-        </div>
-      </div>
-    )
-  }
+          */}
+            <UserInfo user={props.author} />
+            <div className="Comment-text">{props.text}</div>
+            <div className="Comment-date">
+              {/* 花括号相当于vue的插值表达式、所以可以运行js函数*/}
+              {formatDate(props.date)}
+            </div>
+          </div>
+        );
+      }
 
-  // 定义父级组件
-  function Welcome(props) {
-      return (
-        <div>
-          <h1>Hello、 {props.name}</h1>
-          {
-            /*
+      // 定义父级组件
+      function Welcome(props) {
+        return (
+          <div>
+            <h1>Hello、 {props.name}</h1>
+            {/*
             // 跟vue组件类似传入props不过属性名前不用加:声明未动态绑定、react 会自动动态绑定。
             //date、text、author都是自己定义定义props属性名、即Comment组件内部使用props.属性名访问的。
             //即:props.date、props.text、props.author
             // 也可以在形参传递时直接解构传入 Welcome({date,text,author})
-            */
-          }
-          <Comment date={comment.date} text={comment.text} author={comment.author} />
-          <Comment {...comment} />
-       </div>
-      )
-  }
+            */}
+            <Comment
+              date={comment.date}
+              text={comment.text}
+              author={comment.author}
+            />
+            {/* 使用对象展开运算符将传递所有props */}
+            <Comment {...comment} />
+          </div>
+        );
+      }
 
-  // 1.函数定义根组件
-  function App1() {
-    return (
-      <div>
-          <Welcome name="Sara" />
-          <Welcome name="张三" />
-      </div>
-    )
-  }
-  // 2.类定义  根组件
-  class App2 extends React.Component{
-    render() {
-     return( 
-       <div>
-          <Welcome name="David" />
-          <Welcome name="大卫" />
-        </div>
-      )
-    }
-  }
+      // 1.函数定义根组件
+      function App1() {
+        return (
+          <div>
+            <Welcome name="Sara" />
+            <Welcome name="张三" />
+          </div>
+        );
+      }
+      // 2.类定义  根组件
+      class App2 extends React.Component {
+        render() {
+          return (
+            <div>
+              <Welcome name="David" />
+              <Welcome name="大卫" />
+            </div>
+          );
+        }
+      }
 
+      // 数据对象类似vue中的data中定义的数据
+      const comment = {
+        date: new Date(),
+        text: "I hope you enjoy learning React!",
+        author: {
+          name: "Hello Kitty",
+          avatarUrl: "http://placekitten.com/g/64/64",
+        },
+      };
 
-
-  // 数据对象类似vue中的data中定义的数据
-  const comment = {
-    date: new Date(),
-    text: 'I hope you enjoy learning React!',
-    author: {
-      name: 'Hello Kitty',
-      avatarUrl: 'http://placekitten.com/g/64/64'
-    }
-  }
-
-
-  const element = <App2 />
-  const root = ReactDOM.createRoot(document.getElementById('root'))
-  root.render(element)
-
-  </script>
-</body>
+      const element = <App2 />;
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(element);
+    </script>
+  </body>
 </html>

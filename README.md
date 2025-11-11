@@ -1,18 +1,21 @@
 # react-study
 react框架的学习记录
 2024.06.14 重新梳理。
+2025.11.04 继续整理。
 
 # 一、react概述
 [官网:](https://reactjs.org)
-React: 它是一个用于构建 Web 和原生交互界面的JavaScript 库。跟vue类似React也是渐进式的、也可以被逐步采用的即可以按需引入需要的功能模块。
+[最新文档地址:](https://react.dev)，react18版本更新推出的全新文档地址。
+React: 它是一个用于构建 Web 和原生交互界面的JavaScript 库。跟 vue 类似 React 也是渐进式的、也可以被逐步采用的即可以按需引入需要的功能模块。
 
-react目前是16、18两个大版本会有区别、不过也是增量更新并没有说改变很大。
+react目前是16、18(之后)两个大版本会有区别、不过也是增量更新并没有说改变很大。
 
 # 二、react-basic-study
 react基础语法的学习、这里我们依然不使用任何构建工具。
 基础引入需要3个包就可以在本地进行开发、可以cdn引入也可以下载到本地。
-这种只适合学习、实际生产是不会使用这种方法的。
+注意：这种只适合学习、实际生产是不会使用这种方法的。
 
+**基本使用**
 ```js
 
 // 1. react的核心库、会暴露 React类、提供了创建 react元素\组件的方法。- React.createElement()
@@ -21,10 +24,14 @@ react基础语法的学习、这里我们依然不使用任何构建工具。
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 // 3. js的编译器、将jsx语法编译成js语法。
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-// 3. js的编译器、将jsx语法编译成js语法。
+// 4. 编写react代码。
+<script type="text/babel">
+
+</script>
 
 ```
 
+**目录**
 [1.react概述和基本使用](react-basic-study/react-1.react概述和基本使用.html)
 
 [2.JSX语法](react-basic-study/react-2.JSX语法.html)
@@ -43,19 +50,21 @@ react基础语法的学习、这里我们依然不使用任何构建工具。
 
 [9.Reducer](react-basic-study/react-9.Reducer.html)
 
-[10.react表单](react-basic-study/react-10.react表单.html)
+[10.Context](react-basic-study/react-10.Context.html)
 
 [11.获取DOM对象](react-basic-study/react-11.获取DOM对象.html)
 
-[12.Effect](react-basic-study/react-12.Effect.html)
+[12.react表单](react-basic-study/react-12.react表单.html)
 
-[13.Hooks](react-basic-study/react-13.Hooks.html)
+[13.Effect](react-basic-study/react-13.Effect.html)
 
-
+[14.Hooks](react-basic-study/react-14.Hooks.html)
 
 # 三、react-manual-study
 
-使用npm 手动创建 react 项目学习、先要安装3个包 react、react-dom、react-scripts(提供了webpack等功能)
+## 3.1 基础配置
+
+使用 npm 手动创建 react 项目学习、先要安装3个包 react、react-dom、react-scripts(提供了webpack等功能)
 
 ```bash
 
@@ -63,7 +72,7 @@ react基础语法的学习、这里我们依然不使用任何构建工具。
 $ npm init -y 
 # 安装需要依赖
 $ npm i  react react-dom react-scripts 
-# 安装 typescript 相关的类型定义包
+# 如果是ts安装 typescript 相关的类型定义包
 $ npm install @types/react @types/react-dom typescript
 # 就可以使用本项目内的依赖包打包项目。
 $ npx react-scripts build 
@@ -86,6 +95,8 @@ $ npm install --save-dev eslint-config-react-app eslint@^8.0.0
 # eslint-plugin-react-hooks 主要关注于 React Hooks 的正确使用。
 $ npm install eslint-plugin-react eslint-plugin-react-hooks --save-dev
 ```
+
+**创建.eslintrc.json文件**
 ```js
 // .eslintrc.json
 {
@@ -123,7 +134,7 @@ $ npm install eslint-plugin-react eslint-plugin-react-hooks --save-dev
   }
 ```
 
-创建项目目录结构如下:
+**创建项目目录结构如下:**
 ```js
 项目名(文件名)
 +-- dist[目录]                      // 编译后的目录、用于预览项目
@@ -131,6 +142,9 @@ $ npm install eslint-plugin-react eslint-plugin-react-hooks --save-dev
 +-- node_modules[目录]              // 项目使用的包目录、开发使用和上线使用的都在里边
 +-- src[目录]                       // 源文件/代码、程序员主要编写的目录
 |  +-- component[目录]              // 公共组件文件
+|  +-- hooks[目录]                  // 自定义hooks
+|  +-- router[目录]                 // 路由文件
+|  +-- store[目录]                  // 状态管理
 |  +-- utils[目录]                  // 工具类
 |  +-- views[目录]                  // 页面
 |  +-- index.js                    // 项目的入口文件、里边包括项目的主模块和监听端口号
@@ -140,7 +154,7 @@ $ npm install eslint-plugin-react eslint-plugin-react-hooks --save-dev
 
 ```
 
-## 3.1 react 路由学习
+## 3.2 react 路由学习
 React 路由通常使用 react-router 库来实现、它是一个功能强大的库、用于在 React 应用程序中实现路由。在浏览器环境中实现路由的包是react-router-dom。
 
 安装路由: `$ npm install react-router-dom`
@@ -281,7 +295,7 @@ import { Link,Outlet } from "react-router-dom"
 ```
 
 
-## 3.2 redux相关学习
+## 3.3 redux相关学习
 
 ### 1、Redux核心库
 Redux 是 JavaScript 状态容器，提供可预测化的状态管理。它是一个专门用来做状态管理的js库（不是react插件）作用：集中式管理react应用中的多个组件共享的状态。Redux 是一个使用叫做 “action” 的事件来管理和更新应用状态的模式和工具库 它以集中式 Store（centralized store）的方式对整个应用中使用的状态进行集中管理，其规则确保状态只能以可预测的方式更新。

@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2.JSX语法</title>
-</head>
-<body>
-  <div id="app"></div>
-  <hr>
-  <div>
-    <h4>1.jsx概述</h4>
-    <pre>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2.JSX语法</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <hr />
+    <div>
+      <h4>1.jsx概述</h4>
+      <pre>
 
       1. 定义
         类似 const element = &lt;h1&gt; Hello, world! &lt;/h1&gt;; 这种标签语法既不是JavaScript字符串也不是 HTML,
-        而是在js中书写html标签的语法就被称为:JSX,它是 JavaScript 语法扩展的意思。
+        而是在 JavaScript 中嵌入 html 标签的语法就被称为:JSX,它是 JavaScript 语法扩展的意思。
         它可以让你在 JavaScript 文件中书写类似 HTML 的标签。
 
-        JSX 的作用是用来生成一个 React “元素”或者组件,然后react会将这些元素/组件渲染为页面中的真实DOM、
+        JSX 的作用：是用来生成一个 React “元素”或者组件,然后react会将这些元素/组件渲染为页面中的真实DOM、
         也就是说通过jsx语法可以直接在js里写html标签而不是使用之前的createElement()方法来生成 React “元素”。
         可以在 if、for语句中使用jsx、也可以参数传递给函数或者作为函数的返回值使用。
         if(isShow) {
@@ -31,10 +31,11 @@
           return (
             jsx
           )
-        }
+        }  
 
       2.注意事项
-        注意:跟vue类似也是只能有一个根元素,原生html标签小写、react组件首字母大写。也就是组件要返回多个元素、那么需要使用一个父标签包裹它们才能返回。
+        注意:跟vue类似也是只能有一个根元素,原生html标签小写、react组件首字母大写。
+        如果组件要返回多个元素、那么需要使用一个父标签包裹它们才能返回。对于很多内容返回一般使用 return () 包裹。
         如果不需要指定父标签则需要使用一个空标签包裹(也就是只写尖括号)、这个标签也叫片段 Fragment(简写&lt; &gt; ... &lt;/ &gt;) 它就是起到一个分组作用不会在DOM树上添加额外节点。
         这是因为jsx在底层会被转化为一个 JavaScript 对象。
 
@@ -43,14 +44,14 @@
         比较常见的是css类名要使用 className、因为 class 在JavaScript中是保留字
         然后是样式等常见的使用短横线 - 连接的属性名要去掉 - 改成小驼峰形式
         如: background-color --》 backgroundColor 
-        同时标签必须闭合、自闭合标签也要写上反斜杠结束。
+        同时标签必须正确闭合、自闭合标签也要写上反斜杠结束。
 
       
       3.使用变量
         字符串属性时使用单引号或者双引号括起来即可。
         在 JSX 语法中,你可以在一个大括号 { //js变量、表达式、函数调用、注释 } 内放置任何有效的 JavaScript 表达式、注释等。
         {} 类似 vue 的插值表达式,用来输出简单的js表达式/变量等。
-        不同在于react中当表达式值为:null空值、undefined、布尔值时不显示任何内容。
+        不同在于react中当表达式值为:null、undefined、布尔值时不显示任何内容。
         内联样式要使用对象设置即: style='{{ width:'100px'}}'
         注释:{/* 注释内容  */}
 
@@ -63,36 +64,36 @@
         这些对象被称为 “React 元素”,也就是虚拟dom,最终被react渲染到页面中的内容。
         <img src="./images/JSX 简介.png" alt=""><br>
     </pre>
-  </div>
+    </div>
 
+    <script src="./js/react.development.js"></script>
+    <script src="./js/react-dom.development.js"></script>
+    <script src="./js/babel.min.js"></script>
 
-
-  <script src="./js/react.development.js" ></script>  
-  <script src="./js/react-dom.development.js" ></script>
-  <script src="./js/babel.min.js"></script>
-  
-  <script type="text/babel">
-    const name  = 'zhangsan'
-    const arr = ['孙悟空','猪八戒','沙悟净']
-    function formatName(user) {
-      return user.firstName + ' ' + user.lastName;
-    }
-    const user = {
-      firstName: 'Harper',
-      lastName: 'Perez'
-    }
-    // 直接使用jsx语法、而不是之前的 React.createElement方法生成react元素。
-    const  element = (
-      <h1>
-        hello {name} {formatName(user)} <br />
-        <ul>
-          {arr.map(item => <li>{item}</li>)}
-        </ul>
-      </h1>)
-    //类似vue中的template、这就是声明式编程、开发者不关注如何实现、有框架本身帮忙转换。
-    const root = ReactDOM.createRoot(document.getElementById('app'))
-    root.render(element)
-  </script>
-
-</body>
+    <script type="text/babel">
+      const name = "zhangsan";
+      const arr = ["孙悟空", "猪八戒", "沙悟净"];
+      function formatName(user) {
+        return user.firstName + " " + user.lastName;
+      }
+      const user = {
+        firstName: "Harper",
+        lastName: "Perez",
+      };
+      // 直接使用jsx语法、而不是之前的 React.createElement方法生成react元素。
+      const element = (
+        <h1>
+          hello {name} {formatName(user)} <br />
+          <ul>
+            {arr.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </h1>
+      );
+      //类似vue中的template、这就是声明式编程、开发者不关注如何实现、有框架本身帮忙转换。
+      const root = ReactDOM.createRoot(document.getElementById("app"));
+      root.render(element);
+    </script>
+  </body>
 </html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>13.Effect副作用</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <hr />
+    <div>
+      <h3>1.概述</h3>
+      <pre>
+        有点类似vue中得nextTick,在DOM渲染完成后执行某些操作。
+      Effects 会在渲染后运行一些代码，以便可以将组件与 React 之外的某些系统同步。
+      即：每当你的组件渲染时，React 会先更新页面，然后再运行 useEffect 中的代码。换句话说，useEffect 会“延迟”一段代码的运行，直到渲染结果反映在页面上。
+      编写 Effect 需要遵循以下三个规则：
+
+      1、声明 Effect。默认情况下，Effect 会在每次渲染后都会执行即：屏幕更新渲染之后执行。
+      2、指定 Effect 依赖。大多数 Effect 应该按需执行，而不是在每次渲染后都执行。这时可以传入第二个参数——依赖数组，来告诉 React 仅在某些值发生变化时才重新运行 Effect。只有当你指定的所有依赖项的值都与上一次渲染时完全相同，React 才会跳过重新运行该 Effect即不执行。
+      例如，淡入动画应该只在组件出现时触发。连接和断开服务器的操作只应在组件出现和消失时，或者切换聊天室时执行。文章将介绍如何通过指定依赖来控制如何按需执行。
+      3、必要时添加清理（cleanup）函数。有时 Effect 需要指定如何停止、撤销，或者清除它的效果。例如，“连接”操作需要“断连”，“订阅”需要“退订”，“获取”既需要“取消”也需要“忽略”。你将学习如何使用 清理函数 来做到这一切。
+      不能有条件地声明 Effect，但你的 Effect 中可以包含条件逻辑。
+      第一步：在 React 中引入 useEffect Hook
+      import { useEffect } from 'react';
+      
+      第二步：在组件顶部调用它，并传入在每次渲染时都需要执行的代码
+      function MyComponent() {
+        useEffect(() => {
+          // 每次渲染后都会执行此处的代码
+        },[]);
+        return &lt;div &gt;;
+      }
+      useEffect(() => {
+        // 这里的代码会在每次渲染后运行
+      });
+
+      useEffect(() => {
+        // 这里的代码只会在组件挂载（首次出现）时运行
+      }, []);
+
+      useEffect(() => {
+        // 这里的代码不但会在组件挂载时运行，而且当 a 或 b 的值自上次渲染后发生变化后也会运行
+      }, [a, b]);
+
+      第三步在Effect中返回一个清理函数（可选）,这是因为在开发环境中，React 会在组件首次挂载后立即重新挂载一次。
+      useEffect(() => {
+        return () => {
+          // 这里的代码会在组件卸载（消失）时运行
+        };
+      }, []);
+      内置的 dialog 元素的 showModal 方法在连续被调用两次时会抛出异常。此时可以通过实现清理函数来使其关闭对话框
+      useEffect(() => {
+        const dialog = dialogRef.current;
+        dialog.showModal();
+        返回一个清理函数
+        return () => dialog.close();
+      }, []);
+      事件清理：类似vue中在组件销毁时解除事件监听
+      useEffect(() => {
+        function handleScroll(e) {
+          console.log(window.scrollX, window.scrollY);
+        }
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+      }, []);
+      React 总是在执行下一轮渲染的 Effect 之前清理上一轮渲染的 Effect。
+
+    </pre
+      >
+    </div>
+
+    <script src="./js/react.development.js"></script>
+    <script src="./js/react-dom.development.js"></script>
+    <script src="./js/babel.min.js"></script>
+    <script type="text/babel">
+      const { useState, useRef, useEffect } = React;
+
+      function VideoPlayer({ src, isPlaying }) {
+        const ref = useRef(null);
+
+        useEffect(() => {
+          if (isPlaying) {
+            ref.current.play();
+          } else {
+            ref.current.pause();
+          }
+        });
+
+        return <video ref={ref} src={src} loop playsInline />;
+      }
+      // 每一轮渲染都有其自己的 Effect
+      function Playground() {
+        const [text, setText] = useState("a");
+
+        useEffect(() => {
+          function onTimeout() {
+            console.log("⏰ " + text);
+          }
+
+          console.log('🔵 调度 "' + text + '" 日志');
+          const timeoutId = setTimeout(onTimeout, 3000);
+
+          return () => {
+            console.log('🟡 取消 "' + text + '" 日志');
+            clearTimeout(timeoutId);
+          };
+        }, [text]);
+
+        return (
+          <>
+            <label>
+              日志内容：{" "}
+              <input value={text} onChange={(e) => setText(e.target.value)} />
+            </label>
+            <h1>{text}</h1>
+          </>
+        );
+      }
+
+      function Time() {
+        const [show, setShow] = useState(false);
+        return (
+          <>
+            <button onClick={() => setShow(!show)}>
+              {show ? "卸载" : "挂载"}组件
+            </button>
+            {show && <hr />}
+            {show && <Playground />}
+          </>
+        );
+      }
+
+      function App() {
+        const [isPlaying, setIsPlaying] = useState(false);
+        return (
+          <>
+            <button onClick={() => setIsPlaying(!isPlaying)}>
+              {isPlaying ? "暂停" : "播放"}
+            </button>
+            <VideoPlayer
+              isPlaying={isPlaying}
+              src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+            />
+            <hr />
+            <Time />
+          </>
+        );
+      }
+      const root = ReactDOM.createRoot(document.getElementById("app"));
+      root.render(<App />);
+    </script>
+  </body>
+</html>

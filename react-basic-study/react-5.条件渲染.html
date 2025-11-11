@@ -1,25 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>5.条件渲染</title>
-</head>
-<body>
-  <div id="app">
-    
-  </div>
-  <hr>
-  <div>
-    <h3>1.react条件渲染</h3>
-    <pre>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>5.条件渲染</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <hr />
+    <div>
+      <h3>1.react条件渲染</h3>
+      <pre>
 
-      React 中的条件渲染和 JavaScript 中的一样,使用 JavaScript 运算符 if语句、三元运算符 ?: 和与运算符 && 根据不同的情况渲染 JSX。 
-      去创建元素来表现当前的状态,然后让 React 根据它们来更新 UI。
-      而不是像 vue 中封装了条件渲染指令。但本质上都是一样的就是根据条件的不同来显示不同的值或者组件。
+      React 中的条件渲染和 JavaScript 中的一样,使用 JavaScript 运算符 if语句、三元运算符 ?: 和与运算符 && 根据不同的情况选择性地渲染 JSX。 
+      而不是像 vue 中封装了条件渲染指令。但本质上都是一样的:即根据条件的不同来显示不同的值或者组件。
 
-      if - 返回一个不一样的 JSX、如果不想显示任何东西返回 null即可、因为在react里{}是不会显示null的。
+      if - 返回一个不一样的 JSX、如果不想显示任何东西返回 null 即可、因为在react里{}是不会显示null的。
       得益于jsx的写法我们可以用一个变量来存储react元素或组件。当逻辑复杂时也是应该抽离成组件返回的。
       if (isPacked) {
         return li className="item">{name} ✔/li>;
@@ -33,7 +30,7 @@
       }
       return notChecked
 
-      三元运算符 ?: - 等价写法、返回值也可以是jsx的这时要使用()括起来而已。当然内容多的时候还是抽离成一个组件的。
+      三元运算符 ?: if条件语句的等价写法、返回值也可以是jsx的这时要使用()括起来而已。当然内容多的时候还是抽离成一个组件的。
       return (
         li className="item">
           {isPacked ? (name + ' ✔' ): name}
@@ -51,55 +48,49 @@
       在 JSX 中，{cond && &lt;A / &gt;} 表示 “当 cond 为真值时, 渲染 &lt;A / &gt;，否则不进行渲染。
 
 
-    </pre>
-  </div>
+    </pre
+      >
+    </div>
 
-
-
-  <script src="./js/react.development.js" ></script>  
-  <script src="./js/react-dom.development.js" ></script>
-  <script src="./js/babel.min.js"></script>
-  <script type="text/babel">
-    // 正常的if语句
-    function Item1({ name, isPacked }) {
-      if (isPacked) {
-        return <li className="item">{name} ✔</li>;
+    <script src="./js/react.development.js"></script>
+    <script src="./js/react-dom.development.js"></script>
+    <script src="./js/babel.min.js"></script>
+    <script type="text/babel">
+      // 正常的if语句
+      function Item1({ name, isPacked }) {
+        if (isPacked) {
+          return <li className="item">{name} ✔</li>;
+        }
+        return <li className="item">{name}</li>;
       }
-      return <li className="item">{name}</li>;
-    }
-    // 三元运算符
-    function Item2({ name, isPacked }) {
-      return (
-        <li className="item">
-          {isPacked ? name + ' ✔' : name} 
-        </li>
-      );
-    }
-    // 与运算符
-    function Item3({ name, isPacked }) {
-      return (
-        <li className="item">
-          {name} {isPacked && '✔'}
-        </li>
-      );
-    }
+      // 三元运算符
+      function Item2({ name, isPacked }) {
+        return <li className="item">{isPacked ? name + " ✔" : name}</li>;
+      }
+      // 与运算符
+      function Item3({ name, isPacked }) {
+        return (
+          <li className="item">
+            {name} {isPacked && "✔"}
+          </li>
+        );
+      }
 
-    function PackingList() {
-      return (
-        <section>
-          <h1>Sally Ride 的行李清单</h1>
-          <ul>
-            <Item1 isPacked={true} name="宇航服" />
-            <Item2 isPacked={true} name="带金箔的头盔" />
-            <Item3 isPacked={false} name="Tam 的照片" />
-          </ul>
-        </section>
-      );
-    }
+      function PackingList() {
+        return (
+          <section>
+            <h1>Sally Ride 的行李清单</h1>
+            <ul>
+              <Item1 isPacked={true} name="宇航服" />
+              <Item2 isPacked={true} name="带金箔的头盔" />
+              <Item3 isPacked={false} name="Tam 的照片" />
+            </ul>
+          </section>
+        );
+      }
 
-    const root = ReactDOM.createRoot(document.getElementById('app'))
-    root.render(<PackingList />)
-  </script>
-
-</body>
+      const root = ReactDOM.createRoot(document.getElementById("app"));
+      root.render(<PackingList />);
+    </script>
+  </body>
 </html>
