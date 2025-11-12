@@ -156,16 +156,269 @@ $ npm install eslint-plugin-react eslint-plugin-react-hooks --save-dev
 ```
 
 ## 3.2 react 路由学习
-React 路由通常使用 react-router 库来实现、它是一个功能强大的库、用于在 React 应用程序中实现路由。在浏览器环境中实现路由的包是react-router-dom。
+
+### 1. 概述
+React 路由现在有三个大版本、分别是v5、v6、v7。我们直接学习最新的大版本即可。
+
+React 路由通常使用 react-router 库来实现、它是用于在 React 应用程序中实现路由的一个功能强大的库、一个多策略路由器。
+安装: `$ npm install react-router`
+
+但是 react-router 只是一个核心库、它并没有包含具体的路由实现。
+它有三种路由实现方式(或者说模式):
+1. Declarative 声明式
+2. Data 数据
+3. Framework 框架
+    
+每种模式中可用的功能是递增的，因此从“声明式”到“数据”再到“框架”模式，只是在牺牲架构控制的情况下增加了更多功能。因此，根据您希望从 React Router 获得多少控制或多少帮助来选择您的模式。    
+
+### 2. 路由实现
+
+对于不同的环境（如浏览器、服务器等），我们需要使用不同的路由实现包。三种都需要安装路由: `$ npm i react-router`
+
+而在浏览器环境中，我们通常使用 react-router-dom 包。它是对react-router的浏览器版本的封装、提供了一些额外的功能和组件。使用react-router一样的。
 
 安装路由: `$ npm install react-router-dom`
 
 
 
-在react-router-dom中有四种配置路由的方式、分别是BrowseRouter、MemeoryRouter、StaticRouter、HashRouter、一般我们基本使用的都是 BrowseRouter、HashRouter。
+在react-router-dom中有四种配置路由的方式、分别是
+1. BrowseRouter、
+2. MemeoryRouter、
+3. StaticRouter、
+4. HashRouter、
 
-比如我们使用 BrowseRouter、如下。
+一般我们基本使用的都是 BrowseRouter、HashRouter。
 
+**声明式路由例子**
+```js
+// 渲染一个BrowserRouter
+import { createRoot } from 'react-dom/client'
+import { BrowserRouter, Routes, Route } from "react-router";
+import App from "./app";
+
+const root = createRoot(document.getElementById("root")) ;
+
+root.render(
+  <BrowserRouter>
+  {/* 通过渲染 <Routes> 和 <Route> 来配置路由、path属性指定路由路径、element属性指定路由渲染的组件 */}
+   <Routes>
+      <Route path="/" element={<App />} />
+      <Route element={<AuthLayout />}>
+          {/* 嵌套路由，子路由通过父路由中的 <Outlet/> 进行渲染。 */}
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+      </Route>
+      {/* 只有path时只添加路由前缀而没有父组件 */}
+      <Route path="concerts">
+           {/* 索引路由就像一个默认的子路由，匹配 /concerts */}
+          <Route index element={<ConcertsHome />} />
+          {/* 动态路由参数，:city 是一个参数、可以在组件中通过 useParams 钩子获取 */}
+          <Route path=":city" element={<City />} />
+          <Route path="trending" element={<Trending />} />
+      </Route>
+      <Route path="/article" element={<div>文章页</div>} />
+    </Routes>
+  </BrowserRouter>,
+);
+
+// 链接跳转，用户通过 <Link>、<NavLink> 和 useNavigate() 来跳转路由。
+import { NavLink, Link, useNavigate  } from "react-router";
+function Header() {
+  // 此钩子允许程序员在没有用户交互的情况下将用户导航到新页面。跟vue的路由对象类似
+  let navigate = useNavigate();
+  return (
+    <nav>
+      {/* 此组件用于需要渲染激活状态的导航链接 */}
+      {/* 每当 NavLink 处于激活状态时，它都会自动获得一个 .active 的类名，以便使用 CSS 轻松设置样式。 */}
+      <NavLink
+        to="/"
+        className={({ isActive }) =>
+          isActive ? "active" : ""
+        }
+      >
+        Home
+      </NavLink>
+      {/* 当链接不需要激活样式时，请使用 <Link> 组件。 */}
+      <Link to="/concerts/salt-lake-city">Concerts</Link>
+      {/* 登录表单，登录成功后跳转到 /dashboard */}
+      <MyLoginForm
+        onSuccess={() => {
+          navigate("/dashboard");
+        }}
+      />
+
+    </nav>
+  );
+}
+
+// 路由出口
+import { Outlet } from "react-router";
+
+export default function Dashboard() {
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      {/* will either be <Home/> or <Settings/> */}
+      {/* 子路由通过 <Outlet/> 组件进行渲染。类似vue中的routerview */}
+      <Outlet />
+    </div>
+  );
+}
+
+// 动态路由参数从动态段解析出来的值-和vue是一样的
+// <Route path="/concerts/:city" element={<City />} />
+// :city 是动态段。该城市的解析值将从 useParams 中获取。
+import { useParams } from 'react-router';
+
+export default function City() { 
+  // 获取动态路由参数对象，所以可以解构出参数
+  const params = useParams();
+  const { city } = useParams();
+  return (
+    <div>
+      <h1>城市: {params.city}</h1>
+      <h1>城市: {city}</h1>
+    </div>
+  );
+}
+
+// URL搜索参数，搜索参数是 URL 中 ? 之后的值。它们可以通过 useSearchParams 访问，该钩子返回一个 URLSearchParams 的实例。
+// <Route path="/search" element={<Search />} />
+// /search?query=react-router-dom
+import { useSearchParams } from 'react-router';
+
+export default function Search() {
+  // 返回当前 URL 的 URLSearchParams 和一个更新它们的函数的元组。注意：设置搜索参数会引起导航。
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get('query');
+  return (
+    <div>
+      <h1>搜索查询: {query}</h1>
+    </div>
+  );
+}
+
+
+
+```
+
+**数据路由例子**
+这个就跟vue中抽离路由配置类似了
+```js
+// 入口文件  src/index.js
+// 引入 createRoot - react18之后拆分了
+import { createRoot } from 'react-dom/client'
+// 引入路由提供者用于绑定路由配置 
+import { RouterProvider } from 'react-router'
+// 引入路由配置
+import router from'./router'
+
+// 获取根元素
+const root = createRoot(document.getElementById('root'))
+// 挂载App渲染根元素下
+root.render(
+ {/* 将路由器传递给RouterProvider */}
+ <RouterProvider router={ router } />
+)
+
+
+// src/router/index.js 建一个路由器并将其导出
+import { createBrowserRouter } from "react-router";
+
+// 配置路由，不像声明式一样通过渲染组件来配置路由、而是通过数组来配置路由。
+// 路由对象的配置和声明式路由一样
+// {
+//  path:"路径",
+//  element:组件,
+//  children:子路由数组,
+//  index:索引路由,
+//  loader:加载函数,路由加载器在路由组件渲染之前为其提供数据。
+// errorElement:错误组件,
+// unstable_middleware: unstable_middleware,  类似vue中的路由守卫
+// action: action, 路由动作函数，在路由组件渲染之后为其提供数据。
+// lazy: lazy, 路由懒加载函数，用于在需要时加载路由组件。
+// }
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <div>Hello World</div>,// Router5.x 中使用 Component 属性、6.x之后不支持该属性。
+  },
+  // 嵌套路由
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+    children: [
+      {
+        path: "home",
+        element: <Home />,
+      },
+      {
+        path: "settings",
+        element: <Settings />,
+      },
+    ],
+  },
+  // 索引路由
+  { path: "/", index: true, element: <Home /> },
+  // 动态路由参数
+  {
+    path: "teams/:teamId",
+    // 结构路由参数对象
+    loader: async ({ params }) => {
+      // params are available in loaders/actions
+      let team = await fetchTeam(params.teamId);
+      return { name: team.name };
+    },
+    element: Team,
+  },
+]);
+
+export default router;
+
+// 通过路由加载器提供给路由组件的数据可在组件中通过 useLoaderData 获取
+import { useLoaderData } from "react-router";
+
+function MyRoute() {
+  const { records } = useLoaderData();
+  return <div>{records.length}</div>;
+}
+
+
+```
+
+**框架路由例子**
+```js
+// 创建路由并导出
+import {
+  type RouteConfig,
+  route,
+  index,
+  layout,
+  prefix,
+} from "@react-router/dev/routes";
+
+export default [
+  index("./home.tsx"),
+  route("about", "./about.tsx"),
+
+  layout("./auth/layout.tsx", [
+    route("login", "./auth/login.tsx"),
+    route("register", "./auth/register.tsx"),
+  ]),
+
+  ...prefix("concerts", [
+    index("./concerts/home.tsx"),
+    route(":city", "./concerts/city.tsx"),
+    route("trending", "./concerts/trending.tsx"),
+  ]),
+] satisfies RouteConfig;
+
+
+
+
+```
+
+**例子**
 ```js
 // 创建路由并导出
 import { createBrowserRouter } from 'react-router-dom';
@@ -205,7 +458,7 @@ root.render(
 
 ```
 
-### 1、路由导航
+### 3、路由导航
 路由的跳转有两种方式、一种是编程式导航、一种是声明式导航。
 
 1. 声明式导航
@@ -229,7 +482,7 @@ navigate('/article')
 
 ```
 
-### 2、路由传参
+### 4、路由传参
 和vue一样的、不过react中不是使用组件就是使用hook代替。
 查询字符串传参使用 useSearchParams() 钩子获取
 动态路由使用 useParams() 钩子获取
@@ -259,7 +512,7 @@ const name = params.name
 
 ```
 
-### 3、嵌套路由
+### 5、嵌套路由
 也是通过children属性配置路由嵌套关系、使用&lg;Outlet/&gt;组件配置二级路由渲染位置(也就是路由出口)
 
 
