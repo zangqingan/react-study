@@ -551,18 +551,22 @@ import { Link,Outlet } from "react-router-dom"
 
 ## 3.3 redux相关学习
 
-### 1、Redux核心库
-Redux 是 JavaScript 状态容器，提供可预测化的状态管理。它是一个专门用来做状态管理的js库（不是react插件）作用：集中式管理react应用中的多个组件共享的状态。Redux 是一个使用叫做 “action” 的事件来管理和更新应用状态的模式和工具库 它以集中式 Store（centralized store）的方式对整个应用中使用的状态进行集中管理，其规则确保状态只能以可预测的方式更新。
+### 1、Redux 概述
+类似vuex
+Redux 是 JavaScript 状态容器，提供可预测化的可维护的状态管理。它是一个专门用来做状态管理的js库（不是react插件）作用：集中式管理react应用中的多个组件共享的状态。Redux 是一个使用叫做 “action” 的事件来管理和更新应用状态的模式和工具库、它以集中式 Store（centralized store）的方式对整个应用中使用的状态进行集中管理，其规则确保状态只能以可预测的方式更新。
 
 使用情况：
 1. 应用中有很多 state 在多个组件中需要使用（共享）
 2. 一个组件需要改变另一个组件的状态（通信）
 3. 总体原则：能不用就不用，如果不用比较吃力才用
 
-安装Redux 核心库：`npm install redux`、Redux 是一个小型的独立 JS 库。 但是，它通常与其他几个包一起使用，以帮助管理 React 应用程序中的状态。Redux 可以集成到任何的 UI 框架中，其中最常见的是 React。
-所以有对应专门的包React-Redux、
+安装Redux 核心库：`npm install redux`
 
-**State 管理**
+在实际生产使用上、Redux 是一个小型的独立 JS 库、它通常与其他几个包一起使用，以帮助管理 React 应用程序中的状态。Redux 可以集成到任何的 UI 框架中，其中最常见的是 React。所以有对应专门的包 React-Redux 官方包，它可以让 React 组件访问 state 片段和 dispatch actions 更新 store，从而同 Redux 集成起来。Redux Toolkit 是一个工具库，用于简化 Redux 的使用，并提高开发效率。所以一般还会一起安装两个包：`npm install @reduxjs/toolkit react-redux`。
+此外 Redux DevTools 浏览器插件扩展 可以显示 Redux 存储中状态随时间变化的历史记录。可以方便调试应用程序。
+
+#### Redux 核心概念和相关术语
+和vuex类似的
 state：驱动应用的真实数据源头
 view：基于当前状态的视图声明性描述
 actions：根据用户输入在应用程序中发生的事件，并触发状态更新
@@ -573,14 +577,15 @@ actions：根据用户输入在应用程序中发生的事件，并触发状态�
  当发生某些事情时（例如用户单击按钮），state 会根据发生的事情进行更新，生成新的 state
  基于新的 state 重新渲染 View
 
-然而，当我们有多个组件需要共享和使用相同 state时，可能会变得很复杂，尤其是当这些组件位于应用程序的不同部分时。解决这个问题的一种方法是从组件中提取共享 state，并将其放入组件树之外的一个集中位置。
-通过定义和分离 state 管理中涉及的概念并强制执行维护 view 和 state 之间独立性的规则，代码变得更结构化和易于维护。
-这就是 Redux 背后的基本思想：应用中使用集中式的全局状态来管理，并明确更新状态的模式，以便让代码具有可预测性。
+然而，当我们有多个组件需要共享和使用相同 state 时，可能会变得很复杂，尤其是当这些组件位于应用程序的不同部分时。解决这个问题的一种方法是从组件中提取共享 state，并将其放入组件树之外的一个集中位置(即redux)。通过定义和分离 state 管理中涉及的概念并强制执行维护 view 和 state 之间独立性的规则，代码变得更结构化和易于维护。这就是 Redux 背后的基本思想：在应用中使用集中式的全局状态来管理，并明确更新状态的模式，以便让代码具有可预测性。
+
+**State**
+state 是一个普通的 JavaScript 对象，它包含应用程序的所有状态数据。它是永远不可变的，这意味着你不能直接修改它，只能通过创建一个新的对象来更新状态。
 
 **Action**
 action 是一个具有 type 字段的普通 JavaScript 对象。你可以将 action 视为描述应用程序中发生了什么的事件.type 字段是一个字符串，给这个 action 一个描述性的名字，比如"todos/todoAdded"。我们通常把那个类型的字符串写成“域/事件名称”，其中第一部分是这个 action 所属的特征或类别，第二部分是发生的具体事情。
-Action Creator
-action creator 是一个创建并返回一个 action 对象的函数。它的作用是让你不必每次都手动编写 action 对象.
+action 对象可以有其他字段，其中包含有关发生的事情的附加信息。按照惯例，我们将该信息放在名为 payload 的字段中。
+
 ```js
 // 一个典型的 action 对象
 const addTodoAction = {
@@ -589,41 +594,207 @@ const addTodoAction = {
 };
 ```
 
-**Reducer**
-
-
-
+**Action Creator**
+action creator 是一个创建并返回一个 action 对象的函数。它的作用是让你不必每次都手动编写 action 对象.
 
 ```js
-function Counter() {
-  // State: counter 值
-  const [counter, setCounter] = useState(0);
-
-  // Action: 当事件发生后，触发状态更新的代码
-  const increment = () => {
-    setCounter((prevCounter) => prevCounter + 1);
+// action creator 
+const addTodo = (text) => {
+  return {
+    type: "todos/todoAdded",
+    payload: text,
   };
+};
+```
 
-  // View: 视图定义
-  return (
-    <div>
-      Value: {counter} <button onClick={increment}>Increment</button>
-    </div>
-  );
+**Reducer**
+reducer 是一个纯函数，它接收当前状态 state 和 一个 action 对象，并返回一个新的状态。它负责根据 action 类型来更新状态。函数签名是：(state, action) => newState。 你可以将 reducer 视为一个事件监听器，它根据接收到的 action（事件）类型处理事件。
+```js
+const initialState = { value: 0 };
+
+function counterReducer(state = initialState, action) {
+  // 检查 reducer 是否关心这个 action
+  if (action.type === "counter/increment") {
+    // 如果是，复制 `state`
+    return {
+      ...state,
+      // 使用新值更新 state 副本
+      value: state.value + 1,
+    };
+  }
+  // 返回原来的 state 不变
+  return state;
 }
 ```
 
+**Store**
+Store 不是类。它只是有几个方法的对象。当前 Redux 应用的 state 存在于一个名为 store 的仓库对象中、store 是通过传入一个 reducer 函数来创建的。
+```js
+import { createStore } from "redux";
 
-### 2、React-Redux
-安装：`npm install react-redux`
+// reducer
+function todos(state = [], action) {
+  switch (action.type) {
+    case "ADD_TODO":
+      return state.concat([action.text]);
+    default:
+      return state;
+  }
+}
+// action creator
+function addTodo(text) {
+  return {
+    type: 'ADD_TODO',
+    text
+  }
+}
+// 创建 store
+const store = createStore(todos, ["Use Redux"]);
+// store 有一个名为 getState 的方法，它返回当前状态值
+console.log(store.getState());
+// [ 'Use Redux', 'Read the docs' ]
+
+```
+
+**Dispatch**
+Redux store 有一个 dispatch 方法，用于发送 action 到 reducer。更新 state 的唯一方法是调用 store.dispatch() 并传入一个 action 对象。 dispatch(action) 会调用 reducer 并更新 store 中的 state。
+```js
+// 发送 action 到 store
+store.dispatch({
+  type: "ADD_TODO",
+  text: "Read the docs",
+});
+store.dispatch(addTodo('Read the docs'))
+store.dispatch(addTodo('Read about the middleware'))
+console.log(store.getState());
+```
+
+**Selector**
+Selector 也是一个函数，可以从 store 状态树中提取指定的片段。随着应用变得越来越大，会遇到应用程序的不同部分需要读取相同的数据，selector 可以避免重复这样的读取逻辑、而是通过调用函数返回来获取数据。
+```js
+const selectCounterValue = (state) => state.value;
+
+const currentValue = selectCounterValue(store.getState());
+console.log(currentValue);
+```
 
 
-### 3、Redux Toolkit
-Redux Toolkit 是 Redux 的官方推荐工具包，它简化了编写 Redux 逻辑和设置 store 的过程。
-安装：`npm install @reduxjs/toolkit`
+### 2、Redux实战
+在实际的项目中，使用 react-redux这样的 UI 绑定库。以及Redux Toolkit 工具库。
+安装:`npm install @reduxjs/toolkit react-redux`
+```js
+// src/store/store.js
+// 创建 store
+import { configureStore } from "@reduxjs/toolkit";
+import counterReducer from "../views/customRedux/counterSlice";
 
-### 4、Redux DevTools
-Redux DevTools 扩展 可以显示 Redux 存储中状态随时间变化的历史记录。这允许你有效地调试应用程序，包括使用强大的技术，如“时间旅行调试”。
+export const store = configureStore({
+  reducer: {
+    counter: counterReducer,
+  },
+});
+
+// 创建 slice 状态片
+// counterSlice.js
+import { createSlice } from "@reduxjs/toolkit";
+
+export const counterSlice = createSlice({
+  name: "counter", // slice 名称
+  initialState: {
+    value: 0,
+  },
+  reducers: {
+    increment: (state) => {
+      // Redux Toolkit 允许我们在 reducers 写 "可变" 逻辑。
+      // 并不是真正的改变 state 因为它使用了 immer 库
+      // 当 immer 检测到 "draft state" 改变时，会基于这些改变去创建一个新的
+      // 不可变的 state
+      state.value += 1;
+    },
+    decrement: (state) => {
+      state.value -= 1;
+    },
+    incrementByAmount: (state, action) => {
+      state.value += action.payload;
+    },
+  },
+});
+// 导出 actions
+export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+// 导出 reducer
+export default counterSlice.reducer;
+// 导出选择器
+export const selectCount = (state) => state.counter.value;
+
+// 在首页集成
+// 引入严格模式
+import { StrictMode } from "react";
+// 引入 createRoot - react18之后拆分了
+import { createRoot } from "react-dom/client";
+// 引入 store  和 Provider 进行绑定
+import { Provider } from "react-redux";
+import { store } from "./store";
+// 引入路由提供者用于绑定路由配置
+import { RouterProvider } from "react-router-dom";
+// 引入路由配置
+import router from "./router";
+
+// 获取根元素
+const root = createRoot(document.getElementById("root"));
+// 挂载App渲染根元素下
+root.render(
+  <StrictMode>
+    {/* 绑定 store */}
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+  </StrictMode>
+);
+
+
+// 组件中使用-任何调用 useSelector 或 useDispatch 的 React 组件都可以访问 <Provider> 中的 store。
+// useSelector传入一个 selector 函数，它会为我们调用 someSelector(store.getState())，并返回结果。
+import { useDispatch, useSelector } from "react-redux";
+import { decrement, increment, incrementByAmount } from './counterSlice'
+function Counter() {
+  // 从 store 中获取 counter 值
+  const counter = useSelector((state) => state.counter.value);
+  // 获取 dispatch 函数
+  const dispatch = useDispatch();
+
+  return (
+    <div>
+      <h1>Counter: {counter}</h1>
+      <button onClick={() => dispatch(increment())}>Increment</button>
+      <button onClick={() => dispatch(decrement())}>Decrement</button>
+      <button onClick={() => dispatch(incrementByAmount(5))}>
+        Increment by 5
+      </button>
+    </div>
+  );
+}
+
+
+```
+### 3、总结
+1. 我们可以使用 Redux Toolkit configureStore API 创建一个 Redux store
+  configureStore 接收 reducer 函数来作为命名参数
+  configureStore 自动使用默认值来配置 store
+2. 在 slice 文件中编写 Redux 逻辑
+  一个 slice 包含一个特定功能或部分的 state 相关的 reducer 逻辑和 action
+  Redux Toolkit 的 createSlice API 为你提供的每个 reducer 函数生成 action creator 和 action 类型
+3. Redux reducer 必须遵循以下原则
+  必须依赖 state 和 action 参数去计算出一个新 state
+  必须通过拷贝旧 state 的方式去做 不可变更新 (immutable updates)
+  不能包含任何异步逻辑或其他副作用
+  Redux Toolkit 的 createSlice API 内部使用了 Immer 库才达到表面上直接修改（"mutating"）state 也实现不可变更新（immutable updates）的效果
+4. 一般使用 “thunks” 来开发特定的异步逻辑
+  Thunks 接收 dispatch 和 getState 作为参数
+  Redux Toolkit 内置并默认启用了 redux-thunk 中间件
+5. 使用 React-Redux 来做 React 组件和 Redux store 的通信
+  在应用程序根组件包裹 <Provider store={store}> 使得所有组件都能访问到 store
+  全局状态应该维护在 Redux store 内，局部状态应该维护在局部 React 组件内
+
 
 # 四、react-createApp-study
 项目实战

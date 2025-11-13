@@ -1,0 +1,22 @@
+.post-excerpt {
+  border: 1px solid #7c7676;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.post-content {
+  color: aqua;
+}
+.btn-content {
+  color: white;
+  padding: 16px 8px;
+}
+.button {
+  background-color: #4caf50;
+  text-decoration: none;
+  padding: 4px 6px;
+  border-radius: 4px;
+  margin-left: 10px;
+}
+.post-date {
+  margin-right: 10px;
+}
